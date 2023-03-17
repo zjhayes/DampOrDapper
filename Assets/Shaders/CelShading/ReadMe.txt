@@ -1,0 +1,1 @@
+Shader based on Unity Technologies open project: https://github.com/UnityTechnologies/open-project-1/tree/devlogs/1-toon-shading
