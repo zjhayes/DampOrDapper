@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour, IGameManager
     PlayerController player;
     [SerializeField]
     CameraManager cameras;
+    [SerializeField]
+    WeatherManager weather;
 
     void Awake()
     {
@@ -28,5 +30,10 @@ public class GameManager : MonoBehaviour, IGameManager
     public CameraManager Cameras
     {
         get { return cameras; }
+    }
+
+    public WeatherManager Weather
+    {
+        get { return weather; }
     }
 }

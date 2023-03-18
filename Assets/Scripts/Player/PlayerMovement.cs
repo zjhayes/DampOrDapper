@@ -8,22 +8,27 @@ public class PlayerMovement : GameBehaviour
     [SerializeField]
     float runSpeed = 6.0f;
     [SerializeField]
-    float gravityValue = -9.81f;
+    float gravityValue = 9.81f;
+    [SerializeField]
+    float gravityPower = 1f;
 
     PlayerController player;
     CharacterController controller;
+    float gravity;
     Vector3 direction;
     Vector3 velocity;
     float moveSpeed;
     bool isRunning;
+    bool isGrounded;
 
     void Awake()
     {
         player = gameManager.Player;
         controller = GetComponent<CharacterController>();
+        gravity = gravityValue;
     }
-
-    void LateUpdate()
+    
+    void FixedUpdate()
     {
         // Determine if player is grounded.
         CheckForGround();
@@ -33,7 +38,7 @@ public class PlayerMovement : GameBehaviour
         controller.Move(horizontalMovement);
 
         // Turn character to face the direction they're moving.
-        if (horizontalMovement != Vector3.zero)
+        if (isGrounded && horizontalMovement != Vector3.zero)
         {
             FaceDirection(horizontalMovement);
         }
@@ -45,8 +50,9 @@ public class PlayerMovement : GameBehaviour
 
     void CheckForGround()
     {
+        isGrounded = controller.isGrounded;
         // Ensure player remains above ground.
-        if (controller.isGrounded && velocity.y < 0)
+        if (isGrounded && velocity.y < 0)
         {
             velocity.y = 0f;
         }
@@ -56,14 +62,16 @@ public class PlayerMovement : GameBehaviour
     {
         Vector3 move = new Vector3(direction.x, 0f, 0f);
         move.Normalize();
-        return direction * Time.deltaTime * moveSpeed;
+        return move * Time.deltaTime * moveSpeed;
     }
 
     Vector3 CalculateVerticalMovement()
     {
         // Apply gravity.
-        velocity.y += gravityValue * Time.deltaTime;
-        return velocity * Time.deltaTime;
+        velocity.y -= gravity * gravityPower * Time.deltaTime;
+        Vector3 verticalMove = new Vector3(0f, velocity.y + direction.y, 0f);
+        return verticalMove * Time.deltaTime;
+        
     }
 
     void FaceDirection(Vector3 directionToFace)
@@ -78,7 +86,7 @@ public class PlayerMovement : GameBehaviour
 
     public void Move(Vector2 direction)
     {
-        this.direction = new Vector3(direction.x, 0f, 0f);
+        this.direction = new Vector3(direction.x, direction.y, 0f);
     }
 
     public void Run()
@@ -121,5 +129,16 @@ public class PlayerMovement : GameBehaviour
     public bool IsRunning
     {
         get { return isRunning; }
+    }
+
+    public bool IsGrounded
+    {
+        get { return isGrounded; }
+    }
+
+    public float GravityPower
+    {
+        get { return gravity; }
+        set { gravity = value; }
     }
 }

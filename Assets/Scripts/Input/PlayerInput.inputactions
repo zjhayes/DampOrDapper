@@ -110,6 +110,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Weather",
+            "id": "c6a7f60d-c809-4a4f-a133-188c468643ba",
+            "actions": [
+                {
+                    "name": "Whirlwind",
+                    "type": "Button",
+                    "id": "810a5169-d6f6-4549-9e67-1ae6d9921d8c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "d0708040-9d5a-4db5-ac31-1b09221e9092",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Whirlwind",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

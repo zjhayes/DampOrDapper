@@ -132,6 +132,34 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Weather"",
+            ""id"": ""c6a7f60d-c809-4a4f-a133-188c468643ba"",
+            ""actions"": [
+                {
+                    ""name"": ""Whirlwind"",
+                    ""type"": ""Button"",
+                    ""id"": ""810a5169-d6f6-4549-9e67-1ae6d9921d8c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""d0708040-9d5a-4db5-ac31-1b09221e9092"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Whirlwind"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -142,6 +170,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_Character_Run = m_Character.FindAction("Run", throwIfNotFound: true);
         m_Character_Attack = m_Character.FindAction("Attack", throwIfNotFound: true);
         m_Character_Shield = m_Character.FindAction("Shield", throwIfNotFound: true);
+        // Weather
+        m_Weather = asset.FindActionMap("Weather", throwIfNotFound: true);
+        m_Weather_Whirlwind = m_Weather.FindAction("Whirlwind", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -254,11 +285,48 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         }
     }
     public CharacterActions @Character => new CharacterActions(this);
+
+    // Weather
+    private readonly InputActionMap m_Weather;
+    private IWeatherActions m_WeatherActionsCallbackInterface;
+    private readonly InputAction m_Weather_Whirlwind;
+    public struct WeatherActions
+    {
+        private @PlayerInput m_Wrapper;
+        public WeatherActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Whirlwind => m_Wrapper.m_Weather_Whirlwind;
+        public InputActionMap Get() { return m_Wrapper.m_Weather; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(WeatherActions set) { return set.Get(); }
+        public void SetCallbacks(IWeatherActions instance)
+        {
+            if (m_Wrapper.m_WeatherActionsCallbackInterface != null)
+            {
+                @Whirlwind.started -= m_Wrapper.m_WeatherActionsCallbackInterface.OnWhirlwind;
+                @Whirlwind.performed -= m_Wrapper.m_WeatherActionsCallbackInterface.OnWhirlwind;
+                @Whirlwind.canceled -= m_Wrapper.m_WeatherActionsCallbackInterface.OnWhirlwind;
+            }
+            m_Wrapper.m_WeatherActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Whirlwind.started += instance.OnWhirlwind;
+                @Whirlwind.performed += instance.OnWhirlwind;
+                @Whirlwind.canceled += instance.OnWhirlwind;
+            }
+        }
+    }
+    public WeatherActions @Weather => new WeatherActions(this);
     public interface ICharacterActions
     {
         void OnMovement(InputAction.CallbackContext context);
         void OnRun(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
         void OnShield(InputAction.CallbackContext context);
+    }
+    public interface IWeatherActions
+    {
+        void OnWhirlwind(InputAction.CallbackContext context);
     }
 }
