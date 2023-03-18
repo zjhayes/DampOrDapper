@@ -5,7 +5,7 @@ public class WhirlwindController : GameBehaviour
     [SerializeField]
     GameObject whirlwindPrefab;
 
-    PlayerController player;
+    CharacterController character;
 
     public float amplitude = 0.5f;   // The height of the floating movement.
     public float speed = 1.0f;       // The speed of the floating movement.
@@ -17,7 +17,7 @@ public class WhirlwindController : GameBehaviour
 
     void Awake()
     {
-        player = gameManager.Player;
+        character = gameManager.Character;
     }
     
     void FixedUpdate()
@@ -28,30 +28,31 @@ public class WhirlwindController : GameBehaviour
             float y = startPosition.y + amplitude * Mathf.Sin(speed * Time.time + offset);
             float height = y + floatHeight;
             Debug.Log(y + " " + floatHeight);
-            Vector3 movement = new Vector3(0.0f, height - player.transform.position.y, 0.0f);
-            player.Move(movement);
+            Vector3 movement = new Vector3(0.0f, height - character.transform.position.y, 0.0f);
+            //character.Move(movement);
         }
     }
 
     public void Boost()
     {
-        if(player.Movement.IsGrounded)
+        /*
+        if(character.Movement.IsGrounded)
         {
             gameManager.Input.CharacterControls.UnassignControls();
             isBoosted = true;
-            startPosition = player.transform.position;
+            startPosition = character.transform.position;
             Instantiate(whirlwindPrefab, startPosition, Quaternion.identity);
-            player.Movement.GravityPower = 0.0f;
+            character.Movement.GravityPower = 0.0f;
             this.enabled = true;
-        }
+        }*/
     }
 
     public void Release()
-    {
+    {/*
         isBoosted = false;
         gameManager.Input.CharacterControls.AssignControls();
-        player.Movement.GravityPower = 1.0f;
-        player.Movement.Move(new Vector3());
-        this.enabled = false;
+        character.Movement.GravityPower = 1.0f;
+        character.Movement.Move(new Vector3());
+        this.enabled = false;*/
     }
 }

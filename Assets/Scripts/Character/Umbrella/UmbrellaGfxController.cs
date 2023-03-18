@@ -3,17 +3,16 @@ using UnityEngine;
 public class UmbrellaGfxController : GameBehaviour
 {
     [SerializeField]
+    UmbrellaController umbrella;
+    [SerializeField]
     GameObject cane;
     [SerializeField]
     GameObject openUmbrella;
     [SerializeField]
     GameObject closedUmbrella;
 
-    UmbrellaController umbrella;
-
     void Awake()
     {
-        umbrella = gameManager.Player.Umbrella;
         UpdatePose();
     }
 

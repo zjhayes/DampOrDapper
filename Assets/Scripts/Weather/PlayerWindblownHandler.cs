@@ -1,10 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerController))]
 [RequireComponent(typeof(ParticleTrigger))]
 public class PlayerWindblownHandler : GameBehaviour
-{
+{/*
     PlayerController player;
     ParticleTrigger windTrigger;
 
@@ -22,5 +21,5 @@ public class PlayerWindblownHandler : GameBehaviour
         {
             Debug.Log("Dewburt is windblow.");
         }
-    }
+    }*/
 }
