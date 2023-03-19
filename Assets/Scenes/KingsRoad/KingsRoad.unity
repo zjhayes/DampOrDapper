@@ -1612,10 +1612,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   whirlwindPrefab: {fileID: 5685533433487797523, guid: 63c19ca794f6a2e4b86e97541d2714a3,
     type: 3}
-  amplitude: 0.5
-  speed: 1
-  offset: 0
-  floatHeight: 5
 --- !u!4 &938139733
 Transform:
   m_ObjectHideFlags: 0
@@ -12791,7 +12787,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   input: {fileID: 1884014581}
-  character: {fileID: 0}
+  character: {fileID: 2121032244}
   cameras: {fileID: 1884014580}
   weather: {fileID: 1884014583}
 --- !u!114 &1884014583
@@ -13478,6 +13474,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 168096095724474381}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2121032244 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7567276357499202468, guid: 7ad533f065f61fe4d92d849b13c539d1,
+    type: 3}
+  m_PrefabInstance: {fileID: 168096095724474381}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e2f062d256525a4fa9f3abc73a531fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &2126867937 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2741418139949163589, guid: 33729558d430a0243af42336014b9151,
@@ -13721,11 +13729,6 @@ PrefabInstance:
       propertyPath: destination
       value: 
       objectReference: {fileID: 1873083923}
-    - target: {fileID: 8909282979309376185, guid: 7ad533f065f61fe4d92d849b13c539d1,
-        type: 3}
-      propertyPath: m_Speed
-      value: 3
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7ad533f065f61fe4d92d849b13c539d1, type: 3}
 --- !u!4 &168096095724474382 stripped
@@ -14342,10 +14345,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5685533433487797522, guid: 63c19ca794f6a2e4b86e97541d2714a3,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5685533433487797523, guid: 63c19ca794f6a2e4b86e97541d2714a3,
         type: 3}
       propertyPath: m_Name
       value: Tornado
+      objectReference: {fileID: 0}
+    - target: {fileID: 5685533433487797523, guid: 63c19ca794f6a2e4b86e97541d2714a3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 63c19ca794f6a2e4b86e97541d2714a3, type: 3}

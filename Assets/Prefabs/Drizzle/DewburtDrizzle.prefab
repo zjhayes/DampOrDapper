@@ -37,6 +37,7 @@ Transform:
   m_Children:
   - {fileID: 423210817839682591}
   - {fileID: 8671717651519972073}
+  - {fileID: 8187004368175376615}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -50,7 +51,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 3
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -105,6 +106,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movement: {fileID: 2737629903521725918}
+  context: {fileID: 1987401230204358816}
   destination: {fileID: 0}
 --- !u!114 &2737629903521725918
 MonoBehaviour:
@@ -118,6 +120,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a4a17dbb4078bd49ba8a2a6ec51757d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxSpeed: 6
 --- !u!114 &168096096493892134
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -147,6 +150,96 @@ MonoBehaviour:
   animator: {fileID: 5998697034407874149}
   speedParameterName: speedPercent
   smoothTime: 0.1
+--- !u!1 &3673510651566845611
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8187004368175376615}
+  - component: {fileID: 1987401230204358816}
+  - component: {fileID: 2717300040357422470}
+  - component: {fileID: 8655824007918206003}
+  - component: {fileID: 2681563598330322897}
+  m_Layer: 0
+  m_Name: CharacterStates
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8187004368175376615
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3673510651566845611}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 168096096493892135}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1987401230204358816
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3673510651566845611}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59c36ec67e0d608439e8e7a693f72376, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  character: {fileID: 7567276357499202468}
+  navigationState: {fileID: 2717300040357422470}
+  airborneState: {fileID: 8655824007918206003}
+  hoverState: {fileID: 2681563598330322897}
+--- !u!114 &2717300040357422470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3673510651566845611}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d94a3a2a92b4748b46096bba774851, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8655824007918206003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3673510651566845611}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0b627b0c096a1f43a3e7aaf2a9b2ed6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2681563598330322897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3673510651566845611}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73da3565fd7009748bf3f799a16cceac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 2
+  maxDistance: 2
+  minDistance: 1
 --- !u!1 &8230032274722082789
 GameObject:
   m_ObjectHideFlags: 0
@@ -500,7 +593,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 7326425758153111859, guid: 6d3864b0dc2de674eabc89f8f2aefb10, type: 3}
 --- !u!95 &5998697034407874149 stripped
