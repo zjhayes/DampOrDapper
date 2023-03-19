@@ -106,6 +106,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movement: {fileID: 2737629903521725918}
+  animator: {fileID: 2127336942538869956}
   context: {fileID: 1987401230204358816}
   destination: {fileID: 0}
 --- !u!114 &2737629903521725918
@@ -149,6 +150,7 @@ MonoBehaviour:
   character: {fileID: 7567276357499202468}
   animator: {fileID: 5998697034407874149}
   speedParameterName: speedPercent
+  isAirborneParameterName: isAirborne
   smoothTime: 0.1
 --- !u!1 &3673510651566845611
 GameObject:

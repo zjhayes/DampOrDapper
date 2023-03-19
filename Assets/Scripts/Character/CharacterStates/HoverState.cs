@@ -18,6 +18,7 @@ public class HoverState : CharacterState
     {
         initialTime = Time.time;
         initialPosition = character.transform.position;
+        character.Animator.IsHovering(true);
     }
 
     void FixedUpdate()
@@ -38,5 +39,10 @@ public class HoverState : CharacterState
 
         // Set the new position of the rigidbody.
         character.transform.position = new Vector3(initialPosition.x, height, initialPosition.z);
+    }
+
+    void OnDisable()
+    {
+        character.Animator.IsHovering(false);
     }
 }

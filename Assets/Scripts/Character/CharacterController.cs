@@ -5,6 +5,8 @@ public class CharacterController : GameBehaviour, ICharacterController
     [SerializeField]
     CharacterMovement movement;
     [SerializeField]
+    CharacterAnimator animator;
+    [SerializeField]
     CharacterContext context;
     [SerializeField]
     Transform destination;
@@ -17,6 +19,11 @@ public class CharacterController : GameBehaviour, ICharacterController
     public CharacterMovement Movement
     {
         get { return movement; }
+    }
+
+    public CharacterAnimator Animator
+    {
+        get { return animator; }
     }
 
     public CharacterContext Context
