@@ -3,7 +3,7 @@ using UnityEngine;
 public class WhirlwindController : GameBehaviour
 {
     [SerializeField]
-    float launchSpeed = 10.0f;
+    float launchSpeed = 15.0f;
     [SerializeField]
     GameObject whirlwindPrefab;
 

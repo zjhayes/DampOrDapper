@@ -13,7 +13,7 @@ public class CharacterController : GameBehaviour, ICharacterController
 
     void Start()
     {
-        context.Continue();
+        context.Navigate();
     }
 
     public CharacterMovement Movement

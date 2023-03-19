@@ -1,6 +1,6 @@
 using UnityEngine;
 
-/*** Character bobs up and down in the air. ***/
+/** Character bobs up and down in the air. **/
 public class HoverState : CharacterState
 {
     [SerializeField]

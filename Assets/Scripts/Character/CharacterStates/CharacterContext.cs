@@ -10,6 +10,8 @@ public class CharacterContext : GameBehaviour
     AirborneState airborneState;
     [SerializeField]
     HoverState hoverState;
+    [SerializeField]
+    GlideState glideState;
 
     StateContext<ICharacterController> stateContext;
 
@@ -22,7 +24,7 @@ public class CharacterContext : GameBehaviour
     {
         if(character.Movement.IsGrounded)
         {
-            stateContext.Transition<NavigationState>(navigationState);
+            Navigate();
         }
         else
         {
@@ -30,9 +32,19 @@ public class CharacterContext : GameBehaviour
         }
     }
 
+    public void Navigate()
+    {
+        stateContext.Transition<NavigationState>(navigationState);
+    }
+
     public void Hover()
     {
         stateContext.Transition<HoverState>(hoverState);
+    }
+
+    public void Glide()
+    {
+        stateContext.Transition<GlideState>(glideState);
     }
 
     public CharacterState State

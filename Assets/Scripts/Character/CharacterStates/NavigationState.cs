@@ -1,6 +1,6 @@
 using UnityEngine;
 
-/*** Character moves to next destination. ***/
+/** Character moves to next destination. **/
 public class NavigationState : CharacterState
 {
     void OnEnable()

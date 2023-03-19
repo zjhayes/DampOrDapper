@@ -9,7 +9,9 @@ public class CharacterAnimator : GameBehaviour
     [SerializeField]
     string speedParameterName = "speedPercent";
     [SerializeField]
-    string isHoveringParameter = "isHovering";
+    string isHoveringParameterName = "isHovering";
+    [SerializeField]
+    string isGlidingParameterName = "isGliding";
     [SerializeField]
     float smoothTime = 0.1f;
 
@@ -21,6 +23,11 @@ public class CharacterAnimator : GameBehaviour
 
     public void IsHovering(bool airborne)
     {
-        animator.SetBool(isHoveringParameter, airborne);
+        animator.SetBool(isHoveringParameterName, airborne);
+    }
+
+    public void IsGliding(bool gliding)
+    {
+        animator.SetBool(isGlidingParameterName, gliding);
     }
 }
