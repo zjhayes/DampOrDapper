@@ -1406,7 +1406,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 821934885}
   m_LocalRotation: {x: 0, y: -0.043619405, z: 0, w: 0.9990483}
-  m_LocalPosition: {x: 3.565869, y: 2.2, z: -11.954337}
+  m_LocalPosition: {x: 3.5658686, y: 2.2, z: -11.954337}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1613,6 +1613,7 @@ MonoBehaviour:
   launchSpeed: 15
   whirlwindPrefab: {fileID: 5685533433487797523, guid: 63c19ca794f6a2e4b86e97541d2714a3,
     type: 3}
+  doneParameterName: Done
 --- !u!4 &938139733
 Transform:
   m_ObjectHideFlags: 0
@@ -1900,7 +1901,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1202804983}
   m_LocalRotation: {x: 0, y: -0.043619405, z: 0, w: 0.9990483}
-  m_LocalPosition: {x: 3.565869, y: 2.2, z: -11.954337}
+  m_LocalPosition: {x: 3.5658686, y: 2.2, z: -11.954337}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -12603,20 +12604,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5685533433487797522, guid: 63c19ca794f6a2e4b86e97541d2714a3,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5685533433487797523, guid: 63c19ca794f6a2e4b86e97541d2714a3,
         type: 3}
       propertyPath: m_Name
       value: Whirlwind
-      objectReference: {fileID: 0}
-    - target: {fileID: 5685533433487797523, guid: 63c19ca794f6a2e4b86e97541d2714a3,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 63c19ca794f6a2e4b86e97541d2714a3, type: 3}

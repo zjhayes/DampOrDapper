@@ -1,21 +1,29 @@
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class WhirlwindController : GameBehaviour
 {
     [SerializeField]
     float launchSpeed = 15.0f;
     [SerializeField]
+    float dissolveSpeed = 1.0f;
+    [SerializeField]
     GameObject whirlwindPrefab;
+    [SerializeField]
+    string dissolveParameterName = "Dissolve";
 
     CharacterController character;
 
     Vector3 initialPosition;
 
+    bool isReleased;
     bool isLaunched;
+    GameObject currentWhirlwind;
 
     void Start()
     {
         character = gameManager.Character;
+        isReleased = false;
         isLaunched = false;
     }
 
@@ -24,15 +32,24 @@ public class WhirlwindController : GameBehaviour
         if(character.Movement.IsGrounded)
         {
             isLaunched = false;
+            isReleased = false;
+            if(currentWhirlwind != null)
+            {
+                DissolveWhirlwind();
+            }
+        }
+        else if (currentWhirlwind != null & (isLaunched || (!isLaunched && isReleased )))
+        {
+            DissolveWhirlwind();
         }
     }
 
     public void Boost()
     {
-        if(character.Movement.IsGrounded)
+        if(character.Movement.IsGrounded && currentWhirlwind == null)
         {
             initialPosition = character.transform.position;
-            Instantiate(whirlwindPrefab, initialPosition, Quaternion.identity);
+            currentWhirlwind = (GameObject) Instantiate(whirlwindPrefab, initialPosition, Quaternion.identity);
             character.Context.Hover();
         }
         else
@@ -47,8 +64,24 @@ public class WhirlwindController : GameBehaviour
         }
     }
 
+    void DissolveWhirlwind()
+    {
+        VisualEffect whirlwindEffect = currentWhirlwind.GetComponent<VisualEffect>();
+        float dissolve = whirlwindEffect.GetFloat(dissolveParameterName);
+        if (dissolve <= 1f)
+        {
+            whirlwindEffect.SetFloat(dissolveParameterName, dissolve + (dissolveSpeed * Time.deltaTime));
+        }
+        else
+        {
+            Destroy(currentWhirlwind);
+            currentWhirlwind = null;
+        }
+    }
+
     public void Release()
     {
+        isReleased = true;
         if(!isLaunched)
         {
             character.Context.Continue();
