@@ -5,6 +5,8 @@ public class GlideState : CharacterState
 {
     [SerializeField]
     float gravityScale = 0.5f;
+    [SerializeField]
+    float windScale = 2.0f;
 
     void OnEnable()
     {
@@ -20,9 +22,10 @@ public class GlideState : CharacterState
         }
         else
         {
-            // Apply gravity.
-            Vector3 gravity = Physics.gravity * gravityScale;
-            character.Movement.RigidBody.AddForce(gravity, ForceMode.Acceleration);
+            // Apply gravity and account for wind.
+            Vector3 movement = Physics.gravity * gravityScale;
+            movement.x += gameManager.Weather.WindVelocity * windScale;
+            character.Movement.RigidBody.AddForce(movement, ForceMode.Acceleration);
         }
     }
 

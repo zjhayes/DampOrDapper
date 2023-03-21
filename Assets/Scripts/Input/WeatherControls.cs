@@ -16,6 +16,18 @@ public class WeatherControls
         // Assign input controls to weather controller.
         input.Weather.Whirlwind.started += _ => manager.Whirlwind.Boost();
         input.Weather.Whirlwind.canceled += _ => manager.Whirlwind.Release();
+        input.Weather.RainIntensity.performed += ctx => IncrementRainIntensity(ctx.ReadValue<float>());
+        input.Weather.WindVelocity.performed += ctx => IncrementWindVelocity(ctx.ReadValue<float>());
+    }
+
+    void IncrementRainIntensity(float increment)
+    {
+        manager.RainIntensity += increment;
+    }
+
+    void IncrementWindVelocity(float increment)
+    {
+        manager.WindVelocity += increment;
     }
 
     public void UnassignControls()

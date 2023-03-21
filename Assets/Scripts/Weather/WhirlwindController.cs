@@ -31,8 +31,6 @@ public class WhirlwindController : GameBehaviour
     {
         if(character.Movement.IsGrounded)
         {
-            isLaunched = false;
-            isReleased = false;
             if(currentWhirlwind != null)
             {
                 DissolveWhirlwind();
@@ -42,26 +40,33 @@ public class WhirlwindController : GameBehaviour
         {
             DissolveWhirlwind();
         }
+
     }
 
     public void Boost()
     {
         if(character.Movement.IsGrounded && currentWhirlwind == null)
         {
+            // Create whirlwind and hover character.
             initialPosition = character.transform.position;
             currentWhirlwind = (GameObject) Instantiate(whirlwindPrefab, initialPosition, Quaternion.identity);
             character.Context.Hover();
         }
         else
         {
-            // Launch character.
+            // Launch character on second trigger.
             if(!isLaunched)
             {
-                Vector3 launchVelocity = new Vector3(0f, launchSpeed, 0f);
-                character.Movement.RigidBody.velocity = character.Movement.RigidBody.velocity + launchVelocity;
-                isLaunched = true;
+                Launch();
             }
         }
+    }
+
+    void Launch()
+    {
+        Vector3 launchVelocity = new Vector3(0f, launchSpeed, 0f);
+        character.Movement.RigidBody.velocity = character.Movement.RigidBody.velocity + launchVelocity;
+        isLaunched = true;
     }
 
     void DissolveWhirlwind()
@@ -76,6 +81,8 @@ public class WhirlwindController : GameBehaviour
         {
             Destroy(currentWhirlwind);
             currentWhirlwind = null;
+            isLaunched = false;
+            isReleased = false;
         }
     }
 

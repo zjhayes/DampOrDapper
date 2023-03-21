@@ -145,6 +145,24 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""WindVelocity"",
+                    ""type"": ""Button"",
+                    ""id"": ""77451051-a175-43e7-910f-675f7f4c8efb"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RainIntensity"",
+                    ""type"": ""Button"",
+                    ""id"": ""a27fa4eb-0f55-4a42-8b51-63d3715a74aa"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -158,6 +176,72 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""action"": ""Whirlwind"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Velocity"",
+                    ""id"": ""8c1d0328-46ec-46d9-9d8a-f17df0d14788"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""WindVelocity"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""6f4586e1-0778-4f84-bbb9-d742b9c55dfb"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""WindVelocity"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""71f274ba-3ea7-43a9-91df-8077e0a0ee7b"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""WindVelocity"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Intensity"",
+                    ""id"": ""eca3a8c1-63ec-4776-9fda-d5714f2a4c87"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RainIntensity"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""325d35b1-c553-4313-8c67-caf3a73264dc"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RainIntensity"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""74cd36d3-0321-462a-9bb9-442af2d84d46"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RainIntensity"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -173,6 +257,8 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         // Weather
         m_Weather = asset.FindActionMap("Weather", throwIfNotFound: true);
         m_Weather_Whirlwind = m_Weather.FindAction("Whirlwind", throwIfNotFound: true);
+        m_Weather_WindVelocity = m_Weather.FindAction("WindVelocity", throwIfNotFound: true);
+        m_Weather_RainIntensity = m_Weather.FindAction("RainIntensity", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -290,11 +376,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Weather;
     private IWeatherActions m_WeatherActionsCallbackInterface;
     private readonly InputAction m_Weather_Whirlwind;
+    private readonly InputAction m_Weather_WindVelocity;
+    private readonly InputAction m_Weather_RainIntensity;
     public struct WeatherActions
     {
         private @PlayerInput m_Wrapper;
         public WeatherActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @Whirlwind => m_Wrapper.m_Weather_Whirlwind;
+        public InputAction @WindVelocity => m_Wrapper.m_Weather_WindVelocity;
+        public InputAction @RainIntensity => m_Wrapper.m_Weather_RainIntensity;
         public InputActionMap Get() { return m_Wrapper.m_Weather; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -307,6 +397,12 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Whirlwind.started -= m_Wrapper.m_WeatherActionsCallbackInterface.OnWhirlwind;
                 @Whirlwind.performed -= m_Wrapper.m_WeatherActionsCallbackInterface.OnWhirlwind;
                 @Whirlwind.canceled -= m_Wrapper.m_WeatherActionsCallbackInterface.OnWhirlwind;
+                @WindVelocity.started -= m_Wrapper.m_WeatherActionsCallbackInterface.OnWindVelocity;
+                @WindVelocity.performed -= m_Wrapper.m_WeatherActionsCallbackInterface.OnWindVelocity;
+                @WindVelocity.canceled -= m_Wrapper.m_WeatherActionsCallbackInterface.OnWindVelocity;
+                @RainIntensity.started -= m_Wrapper.m_WeatherActionsCallbackInterface.OnRainIntensity;
+                @RainIntensity.performed -= m_Wrapper.m_WeatherActionsCallbackInterface.OnRainIntensity;
+                @RainIntensity.canceled -= m_Wrapper.m_WeatherActionsCallbackInterface.OnRainIntensity;
             }
             m_Wrapper.m_WeatherActionsCallbackInterface = instance;
             if (instance != null)
@@ -314,6 +410,12 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Whirlwind.started += instance.OnWhirlwind;
                 @Whirlwind.performed += instance.OnWhirlwind;
                 @Whirlwind.canceled += instance.OnWhirlwind;
+                @WindVelocity.started += instance.OnWindVelocity;
+                @WindVelocity.performed += instance.OnWindVelocity;
+                @WindVelocity.canceled += instance.OnWindVelocity;
+                @RainIntensity.started += instance.OnRainIntensity;
+                @RainIntensity.performed += instance.OnRainIntensity;
+                @RainIntensity.canceled += instance.OnRainIntensity;
             }
         }
     }
@@ -328,5 +430,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     public interface IWeatherActions
     {
         void OnWhirlwind(InputAction.CallbackContext context);
+        void OnWindVelocity(InputAction.CallbackContext context);
+        void OnRainIntensity(InputAction.CallbackContext context);
     }
 }

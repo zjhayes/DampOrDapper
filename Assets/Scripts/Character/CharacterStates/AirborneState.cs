@@ -6,6 +6,8 @@ public class AirborneState : CharacterState
     float gravityScale = 1.0f;
     [SerializeField]
     float minGlideHeight = 5.0f;
+    [SerializeField]
+    float windScale = 1.0f;
 
     void OnEnable()
     {
@@ -29,9 +31,10 @@ public class AirborneState : CharacterState
                 character.Context.Glide();
             }
 
-            // Apply gravity.
-            Vector3 gravity = Physics.gravity * gravityScale;
-            character.Movement.RigidBody.AddForce(gravity, ForceMode.Acceleration);
+            // Apply gravity and account for wind.
+            Vector3 movement = Physics.gravity * gravityScale;
+            movement.x += gameManager.Weather.WindVelocity * windScale;
+            character.Movement.RigidBody.AddForce(movement, ForceMode.Acceleration);
         }
     }
 

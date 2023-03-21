@@ -1271,6 +1271,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 2281579050382831294}
   m_PrefabAsset: {fileID: 0}
+--- !u!198 &720886360 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 2281579050834949355, guid: ec777742cf44f564fae1a8b9d9a8bf17,
+    type: 3}
+  m_PrefabInstance: {fileID: 2281579050382831294}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &781690483
 GameObject:
   m_ObjectHideFlags: 0
@@ -1590,7 +1596,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 938139733}
+  - component: {fileID: 938139734}
   - component: {fileID: 938139732}
+  - component: {fileID: 938139735}
   m_Layer: 0
   m_Name: Weather
   m_TagString: Untagged
@@ -1611,9 +1619,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   launchSpeed: 15
+  dissolveSpeed: 1
   whirlwindPrefab: {fileID: 5685533433487797523, guid: 63c19ca794f6a2e4b86e97541d2714a3,
     type: 3}
-  doneParameterName: Done
+  dissolveParameterName: Dissolve
 --- !u!4 &938139733
 Transform:
   m_ObjectHideFlags: 0
@@ -1631,6 +1640,36 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &938139734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 938139731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ced3178b7e98dd14aa9a3dacb565e68e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxRainIntensity: 3
+  maxWindVelocity: 3
+  whirlwind: {fileID: 938139732}
+--- !u!114 &938139735
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 938139731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6b3359b53080a8439f5d05ac3f82dca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rainParticleSystem: {fileID: 720886360}
+  baseIntensity: 20
+  changeInIntensitySpeed: 1
 --- !u!4 &951516586 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a673b917d7c29514a952380d6ee97aaa,
@@ -12604,10 +12643,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5685533433487797522, guid: 63c19ca794f6a2e4b86e97541d2714a3,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5685533433487797523, guid: 63c19ca794f6a2e4b86e97541d2714a3,
         type: 3}
       propertyPath: m_Name
       value: Whirlwind
+      objectReference: {fileID: 0}
+    - target: {fileID: 5685533433487797523, guid: 63c19ca794f6a2e4b86e97541d2714a3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 63c19ca794f6a2e4b86e97541d2714a3, type: 3}
@@ -12796,7 +12845,6 @@ GameObject:
   - component: {fileID: 1884014582}
   - component: {fileID: 1884014581}
   - component: {fileID: 1884014580}
-  - component: {fileID: 1884014583}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: GameController
@@ -12860,20 +12908,7 @@ MonoBehaviour:
   input: {fileID: 1884014581}
   character: {fileID: 2121032244}
   cameras: {fileID: 1884014580}
-  weather: {fileID: 1884014583}
---- !u!114 &1884014583
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1884014578}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ced3178b7e98dd14aa9a3dacb565e68e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  whirlwind: {fileID: 938139732}
+  weather: {fileID: 938139734}
 --- !u!1 &1903662292
 GameObject:
   m_ObjectHideFlags: 0
