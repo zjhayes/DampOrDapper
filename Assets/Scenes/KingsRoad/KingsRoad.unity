@@ -1669,7 +1669,64 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rainParticleSystem: {fileID: 720886360}
   baseIntensity: 20
-  changeInIntensitySpeed: 1
+  intensityCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 25.26263
+      outSlope: 25.26263
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.10384123
+    - serializedVersion: 3
+      time: 1
+      value: 20
+      inSlope: 54.959763
+      outSlope: 54.959763
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.48457456
+      outWeight: 0.10127479
+    - serializedVersion: 3
+      time: 3
+      value: 400
+      inSlope: 190
+      outSlope: 190
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  transitionDuration: 5
+  transitionCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!4 &951516586 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a673b917d7c29514a952380d6ee97aaa,
@@ -12816,7 +12873,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1873083923
 Transform:
   m_ObjectHideFlags: 0
@@ -12906,7 +12963,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   input: {fileID: 1884014581}
-  character: {fileID: 2121032244}
+  player: {fileID: 2121032244}
   cameras: {fileID: 1884014580}
   weather: {fileID: 938139734}
 --- !u!1 &1903662292
@@ -13830,6 +13887,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1810869834189744702, guid: 7ad533f065f61fe4d92d849b13c539d1,
+        type: 3}
+      propertyPath: m_Height
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1810869834189744702, guid: 7ad533f065f61fe4d92d849b13c539d1,
+        type: 3}
+      propertyPath: m_Radius
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1810869834189744702, guid: 7ad533f065f61fe4d92d849b13c539d1,
+        type: 3}
+      propertyPath: m_Center.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3455427740732213724, guid: 7ad533f065f61fe4d92d849b13c539d1,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7567276357499202468, guid: 7ad533f065f61fe4d92d849b13c539d1,
         type: 3}
       propertyPath: destination
@@ -13845,7 +13922,8 @@ PrefabInstance:
       propertyPath: m_UseGravity
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8909282979309376185, guid: 7ad533f065f61fe4d92d849b13c539d1, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 7ad533f065f61fe4d92d849b13c539d1, type: 3}
 --- !u!4 &168096095724474382 stripped
 Transform:

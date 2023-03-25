@@ -7,7 +7,7 @@ public class GlideState : CharacterState
     float gravityScale = 0.5f;
     [SerializeField]
     float windScale = 2.0f;
-
+    /*
     void OnEnable()
     {
         character.Movement.RigidBody.isKinematic = false;
@@ -33,5 +33,5 @@ public class GlideState : CharacterState
     {
         character.Movement.RigidBody.isKinematic = true;
         character.Animator.IsGliding(false);
-    }
+    }*/
 }

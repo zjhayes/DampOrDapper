@@ -3,7 +3,7 @@ using UnityEngine;
 public class CharacterContext : GameBehaviour
 {
     [SerializeField]
-    CharacterController character;
+    ICharacterController character;
     [SerializeField]
     NavigationState navigationState;
     [SerializeField]
@@ -21,7 +21,7 @@ public class CharacterContext : GameBehaviour
     }
 
     public void Continue()
-    {
+    {/*
         if(character.Movement.IsGrounded)
         {
             Navigate();
@@ -29,7 +29,7 @@ public class CharacterContext : GameBehaviour
         else
         {
             stateContext.Transition<AirborneState>(airborneState);
-        }
+        }*/
     }
 
     public void Navigate()

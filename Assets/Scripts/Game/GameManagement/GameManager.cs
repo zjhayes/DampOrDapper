@@ -5,7 +5,7 @@ public class GameManager : MonoBehaviour, IGameManager
     [SerializeField]
     InputManager input;
     [SerializeField]
-    CharacterController character;
+    PlayerController player;
     [SerializeField]
     CameraManager cameras;
     [SerializeField]
@@ -22,9 +22,9 @@ public class GameManager : MonoBehaviour, IGameManager
         get { return input; }
     }
 
-    public CharacterController Character
+    public PlayerController Player
     {
-        get { return character; }
+        get { return player; }
     }
 
     public CameraManager Cameras

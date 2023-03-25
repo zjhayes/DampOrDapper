@@ -14,8 +14,8 @@ public class WeatherControls
     public void AssignControls()
     {
         // Assign input controls to weather controller.
-        input.Weather.Whirlwind.started += _ => manager.Whirlwind.Boost();
-        input.Weather.Whirlwind.canceled += _ => manager.Whirlwind.Release();
+        //input.Weather.Whirlwind.started += _ => manager.Whirlwind.Boost();
+        //input.Weather.Whirlwind.canceled += _ => manager.Whirlwind.Release();
         input.Weather.RainIntensity.performed += ctx => IncrementRainIntensity(ctx.ReadValue<float>());
         input.Weather.WindVelocity.performed += ctx => IncrementWindVelocity(ctx.ReadValue<float>());
     }
@@ -33,7 +33,7 @@ public class WeatherControls
     public void UnassignControls()
     {
         // Unassign input controls from weather controller.
-        input.Weather.Whirlwind.started -= _ => manager.Whirlwind.Boost();
-        input.Weather.Whirlwind.canceled -= _ => manager.Whirlwind.Release();
+        //input.Weather.Whirlwind.started -= _ => manager.Whirlwind.Boost();
+        //input.Weather.Whirlwind.canceled -= _ => manager.Whirlwind.Release();
     }
 }

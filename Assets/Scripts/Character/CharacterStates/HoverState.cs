@@ -13,7 +13,7 @@ public class HoverState : CharacterState
     Vector3 initialPosition; // Position where character started to float.
     float initialTime; // Time when character started to float.
 
-
+    /*
     void OnEnable()
     {
         initialTime = Time.time;
@@ -44,5 +44,5 @@ public class HoverState : CharacterState
     void OnDisable()
     {
         character.Animator.IsHovering(false);
-    }
+    }*/
 }

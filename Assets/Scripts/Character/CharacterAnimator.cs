@@ -3,7 +3,7 @@ using UnityEngine;
 public class CharacterAnimator : GameBehaviour
 {
     [SerializeField]
-    CharacterController character;
+    PlayerController player;
     [SerializeField]
     Animator animator;
     [SerializeField]
@@ -17,7 +17,7 @@ public class CharacterAnimator : GameBehaviour
 
     void Update()
     {
-        float speedPercent = character.Movement.Magnitude / character.Movement.MaxSpeed;
+        float speedPercent = player.Movement.Direction.magnitude * player.Movement.Speed / player.Movement.RunSpeed;
         animator.SetFloat(speedParameterName, speedPercent, smoothTime, Time.deltaTime);
     }
 

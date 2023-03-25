@@ -1,79 +1,123 @@
 using UnityEngine;
-using UnityEngine.AI;
 
-[RequireComponent(typeof(NavMeshAgent))]
-[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(CharacterController))]
 public class CharacterMovement : MonoBehaviour
 {
     [SerializeField]
-    private float maxSpeed = 6.0f;
+    float walkSpeed = 2.0f;
+    [SerializeField]
+    float runSpeed = 6.0f;
+    [SerializeField]
+    float gravityValue = -9.81f;
 
-    const float GROUND_BUFFER = 0.1f;
-
-    private NavMeshAgent agent;
-    private Rigidbody rigidBody;
+    CharacterController controller;
+    Vector3 direction;
+    Vector3 velocity;
+    float moveSpeed;
+    bool isRunning;
 
     void Awake()
     {
-        agent = GetComponent<NavMeshAgent>();
-        rigidBody = GetComponent<Rigidbody>();
+        controller = GetComponent<CharacterController>();
     }
 
-    public void MoveTo(Vector3 location)
+    void LateUpdate()
     {
-        agent.SetDestination(location);
+        // Determine if player is grounded.
+        CheckForGround();
+
+        // Move character.
+        Vector3 horizontalMovement = CalculateHorizontalMovement();
+        controller.Move(horizontalMovement);
+
+        // Turn character to face the direction they're moving.
+        if (horizontalMovement != Vector3.zero)
+        {
+            FaceDirection(horizontalMovement);
+        }
+
+        // Change the vertical position of the player.
+        Vector3 verticalMovement = CalculateVerticalMovement();
+        controller.Move(verticalMovement);
+    }
+
+    void CheckForGround()
+    {
+        // Ensure player remains above ground.
+        if (controller.isGrounded && velocity.y < 0)
+        {
+            velocity.y = 0f;
+        }
+    }
+
+    Vector3 CalculateHorizontalMovement()
+    {
+        Vector3 move = new Vector3(direction.x, 0f, 0f);
+        move.Normalize();
+        return direction * Time.deltaTime * moveSpeed;
+    }
+
+    Vector3 CalculateVerticalMovement()
+    {
+        // Apply gravity.
+        velocity.y += gravityValue * Time.deltaTime;
+        return velocity * Time.deltaTime;
+    }
+
+    void FaceDirection(Vector3 directionToFace)
+    {
+        gameObject.transform.forward = directionToFace;
     }
 
     void OnEnable()
     {
-        agent.enabled = true;
+        Walk();
     }
 
-    void OnDisable()
+    public void Move(Vector2 direction)
     {
-        agent.enabled = false;
+        this.direction = new Vector3(direction.x, 0f, 0f);
     }
 
-    public float Magnitude
+    public void Run()
     {
-        get { return agent.velocity.magnitude; }
+        moveSpeed = runSpeed;
+        isRunning = true;
+    }
+
+    public void Walk()
+    {
+        moveSpeed = walkSpeed;
+        isRunning = false;
+    }
+
+    public Vector3 Direction
+    {
+        get { return direction; }
+    }
+
+    public Vector3 Velocity
+    {
+        get { return velocity; }
     }
 
     public float Speed
     {
-        get { return agent.speed; }
+        get { return moveSpeed; }
     }
 
-    public float MaxSpeed
+    public float RunSpeed
     {
-        get { return maxSpeed; }
+        get { return runSpeed; }
     }
 
-    public NavMeshAgent Agent
+    public bool IsMoving
     {
-        get { return agent; }
+        get { return velocity != Vector3.zero; }
     }
 
-    public Rigidbody RigidBody
+    public bool IsRunning
     {
-        get { return rigidBody; }
-    }
-
-    public bool IsGrounded
-    {
-        get { return DistanceToGround() <= GROUND_BUFFER; }
-    }
-
-    public float DistanceToGround()
-    {
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, -Vector3.up, out hit))
-        {
-            return hit.distance;
-        }
-        else
-        {
-            return float.MaxValue;
-        }
+        get { return isRunning; }
     }
 }

@@ -8,7 +8,7 @@ public class AirborneState : CharacterState
     float minGlideHeight = 5.0f;
     [SerializeField]
     float windScale = 1.0f;
-
+    /*
     void OnEnable()
     {
         character.Movement.RigidBody.isKinematic = false;
@@ -42,5 +42,5 @@ public class AirborneState : CharacterState
     {
         character.Movement.RigidBody.isKinematic = true;
         character.Animator.IsHovering(false);
-    }
+    }*/
 }
