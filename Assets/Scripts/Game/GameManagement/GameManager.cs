@@ -5,9 +5,11 @@ public class GameManager : MonoBehaviour, IGameManager
     [SerializeField]
     InputManager input;
     [SerializeField]
-    PlayerController player;
+    CharacterController character;
     [SerializeField]
     CameraManager cameras;
+    [SerializeField]
+    WeatherManager weather;
 
     void Awake()
     {
@@ -20,13 +22,18 @@ public class GameManager : MonoBehaviour, IGameManager
         get { return input; }
     }
 
-    public PlayerController Player
+    public CharacterController Character
     {
-        get { return player; }
+        get { return character; }
     }
 
     public CameraManager Cameras
     {
         get { return cameras; }
+    }
+
+    public WeatherManager Weather
+    {
+        get { return weather; }
     }
 }

@@ -110,6 +110,118 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Weather",
+            "id": "c6a7f60d-c809-4a4f-a133-188c468643ba",
+            "actions": [
+                {
+                    "name": "Whirlwind",
+                    "type": "Button",
+                    "id": "810a5169-d6f6-4549-9e67-1ae6d9921d8c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "WindVelocity",
+                    "type": "Button",
+                    "id": "77451051-a175-43e7-910f-675f7f4c8efb",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "RainIntensity",
+                    "type": "Button",
+                    "id": "a27fa4eb-0f55-4a42-8b51-63d3715a74aa",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "d0708040-9d5a-4db5-ac31-1b09221e9092",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Whirlwind",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "Velocity",
+                    "id": "8c1d0328-46ec-46d9-9d8a-f17df0d14788",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "WindVelocity",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "6f4586e1-0778-4f84-bbb9-d742b9c55dfb",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "WindVelocity",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "71f274ba-3ea7-43a9-91df-8077e0a0ee7b",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "WindVelocity",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Intensity",
+                    "id": "eca3a8c1-63ec-4776-9fda-d5714f2a4c87",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RainIntensity",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "325d35b1-c553-4313-8c67-caf3a73264dc",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RainIntensity",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "74cd36d3-0321-462a-9bb9-442af2d84d46",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RainIntensity",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                }
+            ]
         }
     ],
     "controlSchemes": []
