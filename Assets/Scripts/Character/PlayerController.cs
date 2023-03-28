@@ -16,6 +16,9 @@ public class PlayerController : GameBehaviour, ICharacterController
     public delegate void OnWalk();
     public event OnWalk onWalk;
 
+    public delegate void OnJump();
+    public event OnJump onJump;
+
     public delegate void OnAttack();
     public event OnAttack onAttack;
 
@@ -38,6 +41,12 @@ public class PlayerController : GameBehaviour, ICharacterController
     {
         movement.Walk();
         onWalk?.Invoke();
+    }
+
+    public void Jump()
+    {
+        movement.Jump();
+        onJump?.Invoke();
     }
 
     public void Attack()

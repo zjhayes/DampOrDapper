@@ -5,8 +5,8 @@ public class UmbrellaController : GameBehaviour
     [SerializeField]
     UmbrellaPose currentPose;
 
-    public delegate void PoseUpdated();
-    public event PoseUpdated onPoseUpdated;
+    public delegate void OnPoseUpdated();
+    public event OnPoseUpdated onPoseUpdated;
 
     public UmbrellaPose CurrentPose
     {

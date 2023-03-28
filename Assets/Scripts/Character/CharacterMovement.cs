@@ -8,13 +8,26 @@ public class CharacterMovement : MonoBehaviour
     [SerializeField]
     float runSpeed = 6.0f;
     [SerializeField]
+    float jumpPower = 5f;
+    [SerializeField]
     float gravityValue = -9.81f;
+    [SerializeField]
+    float jumpInputTolerance = 0.3f;
+    [SerializeField]
+    float minGlideHeight = 5.0f;
+    [SerializeField]
+    float windResistance = 1.0f;
+
+    const float GROUND_BUFFER = 0.1f;
 
     CharacterController controller;
     Vector3 direction;
     Vector3 velocity;
     float moveSpeed;
     bool isRunning;
+    float gravityScale = 1f;
+
+    float timeSinceJumpPressed;
 
     void Awake()
     {
@@ -23,8 +36,10 @@ public class CharacterMovement : MonoBehaviour
 
     void LateUpdate()
     {
+        timeSinceJumpPressed -= Time.deltaTime;
+
         // Determine if player is grounded.
-        CheckForGround();
+        CheckGround();
 
         // Move character.
         Vector3 horizontalMovement = CalculateHorizontalMovement();
@@ -41,12 +56,19 @@ public class CharacterMovement : MonoBehaviour
         controller.Move(verticalMovement);
     }
 
-    void CheckForGround()
+    void CheckGround()
     {
-        // Ensure player remains above ground.
-        if (controller.isGrounded && velocity.y < 0)
+        if (controller.isGrounded)
         {
-            velocity.y = 0f;
+            // Ensure player remains above ground.
+            if (velocity.y < 0)
+            {
+                velocity.y = 0f;
+            }
+        }
+        else // Not grounded.
+        {
+            //if(velocity.y < 0 && 
         }
     }
 
@@ -59,8 +81,17 @@ public class CharacterMovement : MonoBehaviour
 
     Vector3 CalculateVerticalMovement()
     {
+        float gravityModifier = gravityScale;
+        
         // Apply gravity.
-        velocity.y += gravityValue * Time.deltaTime;
+        velocity.y += gravityValue * gravityScale * Time.deltaTime;
+
+        if (IsGrounded && timeSinceJumpPressed >= 0)
+        {
+            // Jump.
+            velocity.y += jumpPower;
+        }
+
         return velocity * Time.deltaTime;
     }
 
@@ -91,6 +122,12 @@ public class CharacterMovement : MonoBehaviour
         isRunning = false;
     }
 
+    public void Jump()
+    {
+        // Ready jump.
+        timeSinceJumpPressed = jumpInputTolerance;
+    }
+
     public Vector3 Direction
     {
         get { return direction; }
@@ -119,5 +156,29 @@ public class CharacterMovement : MonoBehaviour
     public bool IsRunning
     {
         get { return isRunning; }
+    }
+
+    public bool IsGrounded
+    {
+        get { return DistanceToGround() <= GROUND_BUFFER; }
+    }
+
+    public float DistanceToGround()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, -Vector3.up, out hit))
+        {
+            return hit.distance;
+        }
+        else
+        {
+            return float.MaxValue;
+        }
+    }
+
+    public float GravityScale
+    {
+        get { return gravityScale; }
+        set { gravityScale = value; }
     }
 }
