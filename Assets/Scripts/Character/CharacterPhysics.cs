@@ -7,6 +7,8 @@ public class CharacterPhysics : GameBehaviour
     [SerializeField]
     float gravityValue = -9.81f;
 
+    const float GROUND_BUFFER = 0.01f; // Distance from ground to be considered grounded.
+
     Vector3 velocity;
     float gravityScale = 1f;
 
@@ -28,6 +30,27 @@ public class CharacterPhysics : GameBehaviour
         set { gravityScale = value; }
     }
 
+    public bool IsGrounded
+    {
+        get { return DistanceToGround <= GROUND_BUFFER; }
+    }
+
+    public float DistanceToGround
+    {
+        get
+        {
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, Vector3.down, out hit))
+            {
+                return hit.distance;
+            }
+            else
+            {
+                return float.MaxValue;
+            }
+        }
+    }
+
     public void ApplyVerticalForce(float force)
     {
         // Use kinematic equation for vertical displacement.
@@ -46,6 +69,12 @@ public class CharacterPhysics : GameBehaviour
 
     public void ApplyGravity()
     {
+        if (IsGrounded && velocity.y < 0)
+        {
+            // Prevent momentum when grounded.
+            ResetVerticalVelocity();
+        }
+
         velocity.y += gravityValue * gravityScale * Time.deltaTime;
         ClampVelocity(terminalVelocity);
     }
@@ -58,5 +87,10 @@ public class CharacterPhysics : GameBehaviour
     public void LerpVelocity(Vector3 targetVelocity, float lerpAmount)
     {
         velocity = Vector3.Lerp(velocity, targetVelocity, lerpAmount);
+    }
+
+    void ResetVerticalVelocity()
+    {
+        velocity.y = 0f;
     }
 }

@@ -12,27 +12,18 @@ public class PlayerMovement : CharacterMovement
     bool isFalling;
     bool isGliding;
 
-    const float FALL_BUFFER = -0.1f;
-
-    public bool IsGliding
-    {
-        get { return isGliding; }
-    }
-
-    public bool IsFalling
-    {
-        get { return isFalling; }
-    }
+    const float FALL_BUFFER = -0.1f; // Minimum speed to be considered falling.
     
     protected override Vector3 CalculateVerticalMovement() 
     {
         // Check if character is moving down.
-        isFalling = (!IsGrounded && physics.Velocity.y < FALL_BUFFER);
+        isFalling = (!physics.IsGrounded && physics.Velocity.y < FALL_BUFFER);
         
         if (CanGlide())
         {
             // Character is gliding.
             isGliding = true;
+            isJumping = false;
             physics.GravityScale = 0.25f;
         }
         else
@@ -47,7 +38,16 @@ public class PlayerMovement : CharacterMovement
     bool CanGlide()
     {
         // Character is falling from above minimum glide distance with their umbrella open.
-        return (isFalling && DistanceToGround >= minGlideHeight && umbrella.CurrentPose == UmbrellaPose.OPEN);
+        return (isFalling && physics.DistanceToGround >= minGlideHeight && umbrella.CurrentPose == UmbrellaPose.OPEN);
     }
 
+    public bool IsGliding
+    {
+        get { return isGliding; }
+    }
+
+    public bool IsFalling
+    {
+        get { return isFalling; }
+    }
 }

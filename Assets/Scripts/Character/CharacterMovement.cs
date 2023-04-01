@@ -14,8 +14,6 @@ public class CharacterMovement : GameBehaviour, ICharacterMovement
     float coyoteTime = 0.3f;
     [SerializeField]
     float jumpInputTolerance = 0.3f;
-    [SerializeField]
-    float groundBuffer = 0.1f;
 
     public delegate void OnRun();
     public event OnRun onRun;
@@ -31,6 +29,7 @@ public class CharacterMovement : GameBehaviour, ICharacterMovement
     Vector3 direction;
     float moveSpeed;
     bool isRunning;
+    protected bool isJumping;
 
     float timeSinceJumpInput;
     protected float timeSinceGrounded;
@@ -43,15 +42,14 @@ public class CharacterMovement : GameBehaviour, ICharacterMovement
 
     void LateUpdate()
     {
-        ResetVelocityWhenGrounded();
-
         // Update action timers.
         timeSinceJumpInput -= Time.deltaTime;
         
-        if(IsGrounded)
+        if(physics.IsGrounded)
         {
             // Set timer to coyote time to allow for late jumps from edge of ground.
             timeSinceGrounded = coyoteTime;
+            isJumping = false;
         }
         else
         {
@@ -84,11 +82,11 @@ public class CharacterMovement : GameBehaviour, ICharacterMovement
     protected virtual Vector3 CalculateVerticalMovement()
     {
         physics.ApplyGravity();
-        //Debug.Log(physics.Velocity);
 
         if (timeSinceGrounded >= 0 && timeSinceJumpInput >= 0)
         {
             // Jump.
+            isJumping = true;
             physics.ApplyVerticalForce(jumpPower);
             timeSinceJumpInput = -1f;
             onJump?.Invoke();
@@ -157,32 +155,8 @@ public class CharacterMovement : GameBehaviour, ICharacterMovement
         get { return isRunning; }
     }
 
-    public bool IsGrounded
+    public bool IsJumping
     {
-        get { return DistanceToGround <= groundBuffer; }
-    }
-
-    public float DistanceToGround
-    {
-        get
-        {
-            RaycastHit hit;
-            if (Physics.Raycast(transform.position, Vector3.down, out hit))
-            {
-                return hit.distance;
-            }
-            else
-            {
-                return float.MaxValue;
-            }
-        }
-    }
-
-    void ResetVelocityWhenGrounded()
-    {
-        if(controller.isGrounded && physics.Velocity.y < 0)
-        {
-            physics.SetVerticalVelocity(0f);
-        }
+        get { return isJumping; }
     }
 }

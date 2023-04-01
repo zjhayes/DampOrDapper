@@ -17,18 +17,25 @@ public class CharacterAnimator : GameBehaviour
     [SerializeField]
     float smoothTime = 0.1f;
 
+    void OnEnable()
+    {
+        player.Movement.onJump += UpdateJump;
+    }
+
     void Update()
     {
         float speedPercent = player.Movement.Direction.magnitude * player.Movement.Speed / player.Movement.RunSpeed;
         animator.SetFloat(speedParameterName, speedPercent, smoothTime, Time.deltaTime);
 
-        if (player.Movement.IsGrounded == false)
+        if (player.Physics.IsGrounded)
         {
-            if (player.Physics.Velocity.y > 0)
-            {
-                IsJumping(true);
-            }
-            else if (player.Physics.Velocity.y < 0)
+            IsJumping(false);
+            IsGliding(false);
+            IsHovering(false);
+        }
+        else
+        {
+            if (player.Movement.IsGliding)
             {
                 IsGliding(true);
                 IsJumping(false);
@@ -37,12 +44,6 @@ public class CharacterAnimator : GameBehaviour
             {
                 IsHovering(true);
             }
-        }
-        else
-        {
-            IsJumping(false);
-            IsGliding(false);
-            IsHovering(false);
         }
     }
 
@@ -59,5 +60,10 @@ public class CharacterAnimator : GameBehaviour
     public void IsJumping(bool jumping)
     {
         animator.SetBool(isJumpingParameterName, jumping);
+    }
+
+    void UpdateJump()
+    {
+        IsJumping(player.Movement.IsJumping);
     }
 }
