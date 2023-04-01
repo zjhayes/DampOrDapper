@@ -62,22 +62,24 @@ public class CharacterPhysics : GameBehaviour
         velocity.x += force;
     }
 
-    public void SetVerticalVelocity(float yVelocity)
-    {
-        velocity.y = yVelocity;
-    }
-
     public void ApplyGravity()
     {
-        Vector3 targetVelocity = Vector3.down * terminalVelocity * gravityScale;
-        float gravityRate = Mathf.Abs(gravityValue) * gravityScale * Time.deltaTime;
+        Debug.Log(gravityScale);
+        if (IsGrounded && velocity.y < 0)
+        {
+            velocity.y = 0f;
+        }
+        else
+        {
+            Vector3 targetVelocity = Vector3.down * terminalVelocity * gravityScale;
+            float gravityRate = Mathf.Abs(gravityValue) * gravityScale * Time.deltaTime;
 
-        LerpVelocity(targetVelocity, gravityRate);
+            LerpVelocity(targetVelocity, gravityRate);
+        }
     }
 
     public void LerpVelocity(Vector3 targetVelocity, float lerpAmount)
     {
-        lerpAmount = lerpAmount * Time.deltaTime;
         velocity = Vector3.Lerp(velocity, targetVelocity, lerpAmount);
     }
 }

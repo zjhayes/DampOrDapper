@@ -13887,23 +13887,7 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1237001986245445789, guid: 7ad533f065f61fe4d92d849b13c539d1,
-        type: 3}
-      propertyPath: gravityValue
-      value: -9.81
-      objectReference: {fileID: 0}
-    - target: {fileID: 1237001986245445789, guid: 7ad533f065f61fe4d92d849b13c539d1,
-        type: 3}
-      propertyPath: terminalVelocity
-      value: 53
-      objectReference: {fileID: 0}
-    - target: {fileID: 9204840480469239610, guid: 7ad533f065f61fe4d92d849b13c539d1,
-        type: 3}
-      propertyPath: m_UseGravity
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 9204840480469239610, guid: 7ad533f065f61fe4d92d849b13c539d1, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7ad533f065f61fe4d92d849b13c539d1, type: 3}
 --- !u!4 &168096095724474382 stripped
 Transform:

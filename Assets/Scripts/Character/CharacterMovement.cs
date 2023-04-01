@@ -41,7 +41,6 @@ public class CharacterMovement : GameBehaviour, ICharacterMovement
 
     void LateUpdate()
     {
-        StayAboveGround();
         // Update action timers.
         timeSinceJumpInput -= Time.deltaTime;
         //Debug.Log(physics.Velocity);
@@ -80,8 +79,9 @@ public class CharacterMovement : GameBehaviour, ICharacterMovement
 
     protected virtual Vector3 CalculateVerticalMovement()
     {
-        //physics.ApplyGravity();
+        physics.ApplyGravity();
         //Debug.Log(physics.Velocity);
+
         if (timeSinceGrounded >= 0 && timeSinceJumpInput >= 0)
         {
             // Jump.
@@ -92,7 +92,7 @@ public class CharacterMovement : GameBehaviour, ICharacterMovement
         else if(!physics.IsGrounded)
         {
             //physics.SetVerticalVelocity(0f);
-            physics.ApplyGravity();
+            //physics.ApplyGravity();
         }
         
         return physics.Velocity * Time.deltaTime;
@@ -157,25 +157,4 @@ public class CharacterMovement : GameBehaviour, ICharacterMovement
     {
         get { return isRunning; }
     }
-
-    void StayAboveGround()
-    {
-        if (physics.IsGrounded && physics.Velocity.y < 0)
-        {
-            physics.SetVerticalVelocity(0f);
-        }
-    }
-    /*
-    public bool GroundedThisFrame
-    {
-        get { return controller.isGrounded; }
-    }
-    
-    void StayAboveGround()
-    {
-        if (GroundedThisFrame && physics.Velocity.y < 0)
-        {
-            physics.SetVerticalVelocity(0f);
-        }
-    }*/
 }
