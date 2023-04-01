@@ -1,45 +1,58 @@
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
-public class CharacterMovement : MonoBehaviour
+[RequireComponent(typeof(CharacterPhysics))]
+public class CharacterMovement : GameBehaviour, ICharacterMovement
 {
     [SerializeField]
-    float walkSpeed = 2.0f;
+    float walkSpeed = 3.0f;
     [SerializeField]
     float runSpeed = 6.0f;
     [SerializeField]
-    float jumpPower = 5f;
+    float jumpPower = 3.0f;
     [SerializeField]
-    float gravityValue = -9.81f;
+    float coyoteTime = 0.3f;
     [SerializeField]
     float jumpInputTolerance = 0.3f;
-    [SerializeField]
-    float minGlideHeight = 5.0f;
-    [SerializeField]
-    float windResistance = 1.0f;
 
-    const float GROUND_BUFFER = 0.1f;
+    public delegate void OnRun();
+    public event OnRun onRun;
+
+    public delegate void OnWalk();
+    public event OnWalk onWalk;
+
+    public delegate void OnJump();
+    public event OnJump onJump;
 
     CharacterController controller;
+    protected CharacterPhysics physics;
     Vector3 direction;
-    Vector3 velocity;
     float moveSpeed;
     bool isRunning;
-    float gravityScale = 1f;
 
-    float timeSinceJumpPressed;
+    float timeSinceJumpInput;
+    protected float timeSinceGrounded;
 
     void Awake()
     {
         controller = GetComponent<CharacterController>();
+        physics = GetComponent<CharacterPhysics>();
     }
 
     void LateUpdate()
     {
-        timeSinceJumpPressed -= Time.deltaTime;
-
-        // Determine if player is grounded.
-        CheckGround();
+        // Update action timers.
+        timeSinceJumpInput -= Time.deltaTime;
+        
+        if(physics.IsGrounded)
+        {
+            // Set timer to coyote time to allow for late jumps from edge of ground.
+            timeSinceGrounded = coyoteTime;
+        }
+        else
+        {
+            timeSinceGrounded -= Time.deltaTime;
+        }
 
         // Move character.
         Vector3 horizontalMovement = CalculateHorizontalMovement();
@@ -53,46 +66,39 @@ public class CharacterMovement : MonoBehaviour
 
         // Change the vertical position of the player.
         Vector3 verticalMovement = CalculateVerticalMovement();
+        
         controller.Move(verticalMovement);
     }
 
-    void CheckGround()
-    {
-        if (controller.isGrounded)
-        {
-            // Ensure player remains above ground.
-            if (velocity.y < 0)
-            {
-                velocity.y = 0f;
-            }
-        }
-        else // Not grounded.
-        {
-            //if(velocity.y < 0 && 
-        }
-    }
-
-    Vector3 CalculateHorizontalMovement()
+    protected virtual Vector3 CalculateHorizontalMovement()
     {
         Vector3 move = new Vector3(direction.x, 0f, 0f);
         move.Normalize();
         return direction * Time.deltaTime * moveSpeed;
     }
 
-    Vector3 CalculateVerticalMovement()
+    protected virtual Vector3 CalculateVerticalMovement()
     {
-        float gravityModifier = gravityScale;
-        
-        // Apply gravity.
-        velocity.y += gravityValue * gravityScale * Time.deltaTime;
-
-        if (IsGrounded && timeSinceJumpPressed >= 0)
+        //physics.ApplyGravity();
+        //Debug.Log(physics.Velocity);
+        if (timeSinceGrounded >= 0 && timeSinceJumpInput >= 0)
         {
             // Jump.
-            velocity.y += jumpPower;
+            physics.ApplyVerticalForce(jumpPower);
+            //timeSinceJumpInput = 0f;
+            onJump?.Invoke();
         }
-
-        return velocity * Time.deltaTime;
+        else if(!physics.IsGrounded)
+        {
+            //physics.SetVerticalVelocity(0f);
+            physics.ApplyGravity();
+        }
+        else
+        {
+            //physics.SetVerticalVelocity(0f);
+        }
+        
+        return physics.Velocity * Time.deltaTime;
     }
 
     void FaceDirection(Vector3 directionToFace)
@@ -114,28 +120,25 @@ public class CharacterMovement : MonoBehaviour
     {
         moveSpeed = runSpeed;
         isRunning = true;
+        onRun?.Invoke();
     }
 
     public void Walk()
     {
         moveSpeed = walkSpeed;
         isRunning = false;
+        onWalk?.Invoke();
     }
 
     public void Jump()
     {
         // Ready jump.
-        timeSinceJumpPressed = jumpInputTolerance;
+        timeSinceJumpInput = jumpInputTolerance;
     }
 
     public Vector3 Direction
     {
         get { return direction; }
-    }
-
-    public Vector3 Velocity
-    {
-        get { return velocity; }
     }
 
     public float Speed
@@ -150,7 +153,7 @@ public class CharacterMovement : MonoBehaviour
 
     public bool IsMoving
     {
-        get { return velocity != Vector3.zero; }
+        get { return direction != Vector3.zero; }
     }
 
     public bool IsRunning
@@ -158,27 +161,21 @@ public class CharacterMovement : MonoBehaviour
         get { return isRunning; }
     }
 
-    public bool IsGrounded
+    public bool GroundedThisFrame
     {
-        get { return DistanceToGround() <= GROUND_BUFFER; }
+        get { return controller.isGrounded; }
     }
-
-    public float DistanceToGround()
+    
+    // TODO: Determine if needed.
+    void StayAboveGround()
     {
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, -Vector3.up, out hit))
+        if (GroundedThisFrame)
         {
-            return hit.distance;
+            // Ensure player remains above ground.
+            if (physics.Velocity.y < 0)
+            {
+                physics.SetVerticalVelocity(0f);
+            }
         }
-        else
-        {
-            return float.MaxValue;
-        }
-    }
-
-    public float GravityScale
-    {
-        get { return gravityScale; }
-        set { gravityScale = value; }
     }
 }

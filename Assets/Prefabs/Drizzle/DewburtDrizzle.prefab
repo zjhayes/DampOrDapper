@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 168096096493892135}
   - component: {fileID: 1810869834189744702}
   - component: {fileID: 9204840480469239610}
-  - component: {fileID: 3455427740732213724}
+  - component: {fileID: 1237001986245445789}
   - component: {fileID: 7567276357499202468}
-  - component: {fileID: 2737629903521725918}
+  - component: {fileID: 79028521925391661}
   - component: {fileID: 168096096493892134}
   - component: {fileID: 2127336942538869956}
   m_Layer: 0
@@ -37,7 +37,6 @@ Transform:
   m_Children:
   - {fileID: 423210817839682591}
   - {fileID: 8671717651519972073}
-  - {fileID: 8187004368175376615}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -75,20 +74,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!136 &3455427740732213724
-CapsuleCollider:
+--- !u!114 &1237001986245445789
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 168096096493892132}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  m_Radius: 0.7
-  m_Height: 3
-  m_Direction: 1
-  m_Center: {x: 0, y: 1.5, z: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ece923e2b8ad9124492ea6b0a31d6cc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gravityValue: -9.81
 --- !u!114 &7567276357499202468
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -101,9 +99,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e2f062d256525a4fa9f3abc73a531fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movement: {fileID: 2737629903521725918}
+  movement: {fileID: 79028521925391661}
   umbrella: {fileID: 168096096493892134}
---- !u!114 &2737629903521725918
+  physics: {fileID: 1237001986245445789}
+  animator: {fileID: 2127336942538869956}
+--- !u!114 &79028521925391661
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -112,12 +112,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 168096096493892132}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a4a17dbb4078bd49ba8a2a6ec51757d, type: 3}
+  m_Script: {fileID: 11500000, guid: 33d3ae50867c9214394f9c426b10185f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   walkSpeed: 3
   runSpeed: 6
-  gravityValue: -9.81
+  jumpPower: 3
+  jumpInputTolerance: 0.3
+  umbrella: {fileID: 168096096493892134}
+  minGlideHeight: 5
+  windResistance: 1
 --- !u!114 &168096096493892134
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -148,115 +152,8 @@ MonoBehaviour:
   speedParameterName: speedPercent
   isHoveringParameterName: isHovering
   isGlidingParameterName: isGliding
+  isJumpingParameterName: isJumping
   smoothTime: 0.1
---- !u!1 &3673510651566845611
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8187004368175376615}
-  - component: {fileID: 1987401230204358816}
-  - component: {fileID: 2717300040357422470}
-  - component: {fileID: 8655824007918206003}
-  - component: {fileID: 2681563598330322897}
-  - component: {fileID: 6637982282315884682}
-  m_Layer: 0
-  m_Name: CharacterStates
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8187004368175376615
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3673510651566845611}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 168096096493892135}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1987401230204358816
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3673510651566845611}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59c36ec67e0d608439e8e7a693f72376, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  navigationState: {fileID: 2717300040357422470}
-  airborneState: {fileID: 8655824007918206003}
-  hoverState: {fileID: 2681563598330322897}
-  glideState: {fileID: 6637982282315884682}
---- !u!114 &2717300040357422470
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3673510651566845611}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9d94a3a2a92b4748b46096bba774851, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &8655824007918206003
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3673510651566845611}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a0b627b0c096a1f43a3e7aaf2a9b2ed6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gravityScale: 1
-  minGlideHeight: 5
-  windScale: 1
---- !u!114 &2681563598330322897
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3673510651566845611}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 73da3565fd7009748bf3f799a16cceac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 2
-  maxDistance: 1.75
-  minDistance: 1.25
---- !u!114 &6637982282315884682
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3673510651566845611}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed988ae794e143f4aacaee52a418293f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gravityScale: 0.5
-  windScale: 2
 --- !u!1 &8230032274722082789
 GameObject:
   m_ObjectHideFlags: 0
