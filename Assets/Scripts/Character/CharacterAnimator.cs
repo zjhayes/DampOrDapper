@@ -22,7 +22,7 @@ public class CharacterAnimator : GameBehaviour
         float speedPercent = player.Movement.Direction.magnitude * player.Movement.Speed / player.Movement.RunSpeed;
         animator.SetFloat(speedParameterName, speedPercent, smoothTime, Time.deltaTime);
 
-        if (player.Physics.IsGrounded == false)
+        if (player.Movement.IsGrounded == false)
         {
             if (player.Physics.Velocity.y > 0)
             {

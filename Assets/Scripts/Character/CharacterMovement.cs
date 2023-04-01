@@ -14,6 +14,8 @@ public class CharacterMovement : GameBehaviour, ICharacterMovement
     float coyoteTime = 0.3f;
     [SerializeField]
     float jumpInputTolerance = 0.3f;
+    [SerializeField]
+    float groundBuffer = 0.1f;
 
     public delegate void OnRun();
     public event OnRun onRun;
@@ -41,10 +43,12 @@ public class CharacterMovement : GameBehaviour, ICharacterMovement
 
     void LateUpdate()
     {
+        ResetVelocityWhenGrounded();
+
         // Update action timers.
         timeSinceJumpInput -= Time.deltaTime;
-        //Debug.Log(physics.Velocity);
-        if(physics.IsGrounded)
+        
+        if(IsGrounded)
         {
             // Set timer to coyote time to allow for late jumps from edge of ground.
             timeSinceGrounded = coyoteTime;
@@ -86,13 +90,8 @@ public class CharacterMovement : GameBehaviour, ICharacterMovement
         {
             // Jump.
             physics.ApplyVerticalForce(jumpPower);
-            //timeSinceJumpInput = 0f;
+            timeSinceJumpInput = -1f;
             onJump?.Invoke();
-        }
-        else if(!physics.IsGrounded)
-        {
-            //physics.SetVerticalVelocity(0f);
-            //physics.ApplyGravity();
         }
         
         return physics.Velocity * Time.deltaTime;
@@ -156,5 +155,34 @@ public class CharacterMovement : GameBehaviour, ICharacterMovement
     public bool IsRunning
     {
         get { return isRunning; }
+    }
+
+    public bool IsGrounded
+    {
+        get { return DistanceToGround <= groundBuffer; }
+    }
+
+    public float DistanceToGround
+    {
+        get
+        {
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, Vector3.down, out hit))
+            {
+                return hit.distance;
+            }
+            else
+            {
+                return float.MaxValue;
+            }
+        }
+    }
+
+    void ResetVelocityWhenGrounded()
+    {
+        if(controller.isGrounded && physics.Velocity.y < 0)
+        {
+            physics.SetVerticalVelocity(0f);
+        }
     }
 }

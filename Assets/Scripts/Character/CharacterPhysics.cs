@@ -7,8 +7,6 @@ public class CharacterPhysics : GameBehaviour
     [SerializeField]
     float gravityValue = -9.81f;
 
-    public const float GROUND_BUFFER = 0.1f;
-
     Vector3 velocity;
     float gravityScale = 1f;
 
@@ -30,31 +28,10 @@ public class CharacterPhysics : GameBehaviour
         set { gravityScale = value; }
     }
 
-    public bool IsGrounded
-    {
-        get { return DistanceToGround <= GROUND_BUFFER; }
-    }
-
-    public float DistanceToGround
-    {
-        get
-        {
-            RaycastHit hit;
-            if (Physics.Raycast(transform.position, -Vector3.up, out hit))
-            {
-                return hit.distance;
-            }
-            else
-            {
-                return float.MaxValue;
-            }
-        }
-    }
-
     public void ApplyVerticalForce(float force)
     {
         // Use kinematic equation for vertical displacement.
-        velocity.y = Mathf.Sqrt(force * -2 * gravityValue * gravityScale);
+        velocity.y += Mathf.Sqrt(force * -2 * gravityValue * gravityScale);
     }
 
     public void ApplyHorizontalForce(float force)
@@ -62,20 +39,20 @@ public class CharacterPhysics : GameBehaviour
         velocity.x += force;
     }
 
+    public void SetVerticalVelocity(float yVelocity)
+    {
+        velocity.y = yVelocity;
+    }
+
     public void ApplyGravity()
     {
-        Debug.Log(gravityScale);
-        if (IsGrounded && velocity.y < 0)
-        {
-            velocity.y = 0f;
-        }
-        else
-        {
-            Vector3 targetVelocity = Vector3.down * terminalVelocity * gravityScale;
-            float gravityRate = Mathf.Abs(gravityValue) * gravityScale * Time.deltaTime;
+        velocity.y += gravityValue * gravityScale * Time.deltaTime;
+        ClampVelocity(terminalVelocity);
+    }
 
-            LerpVelocity(targetVelocity, gravityRate);
-        }
+    public void ClampVelocity(float maxMagnitude)
+    {
+        velocity = Vector3.ClampMagnitude(velocity, maxMagnitude);
     }
 
     public void LerpVelocity(Vector3 targetVelocity, float lerpAmount)

@@ -27,20 +27,18 @@ public class PlayerMovement : CharacterMovement
     protected override Vector3 CalculateVerticalMovement() 
     {
         // Check if character is moving down.
-        isFalling = (!physics.IsGrounded && physics.Velocity.y < FALL_BUFFER);
+        isFalling = (!IsGrounded && physics.Velocity.y < FALL_BUFFER);
         
         if (CanGlide())
         {
             // Character is gliding.
             isGliding = true;
             physics.GravityScale = 0.25f;
-            Debug.Log("Is Gliding");
         }
         else
         {
             isGliding = false;
             physics.GravityScale = 1f;
-            Debug.Log("Is not gliding");
         }
         
         return base.CalculateVerticalMovement();
@@ -49,7 +47,7 @@ public class PlayerMovement : CharacterMovement
     bool CanGlide()
     {
         // Character is falling from above minimum glide distance with their umbrella open.
-        return (isFalling && physics.DistanceToGround >= minGlideHeight && umbrella.CurrentPose == UmbrellaPose.OPEN);
+        return (isFalling && DistanceToGround >= minGlideHeight && umbrella.CurrentPose == UmbrellaPose.OPEN);
     }
 
 }
