@@ -29,13 +29,15 @@ public class PlayerMovement : CharacterMovement
         // Check if character is moving down.
         isFalling = (!physics.IsGrounded && physics.Velocity.y < FALL_BUFFER);
         
-        if (CanGlide())
+        if (!isGliding && CanGlide())
         {
+            // Character is gliding.
             isGliding = true;
             physics.GravityScale = 0.25f;
         }
-        else if(timeSinceGrounded > 0)
+        else if(isGliding && physics.IsGrounded)
         {
+            // Character has landed.
             isGliding = false;
             physics.GravityScale = 1f;
         }

@@ -5,7 +5,7 @@ public class CharacterPhysics : GameBehaviour
     [SerializeField]
     float terminalVelocity = 53.0f;
     [SerializeField]
-    float gravityValue = 9.81f;
+    float gravityValue = -9.81f;
 
     public const float GROUND_BUFFER = 0.1f;
 
@@ -53,7 +53,8 @@ public class CharacterPhysics : GameBehaviour
 
     public void ApplyVerticalForce(float force)
     {
-        velocity.y += force;
+        // Use kinematic equation for vertical displacement.
+        velocity.y = Mathf.Sqrt(force * -2 * gravityValue * gravityScale);
     }
 
     public void ApplyHorizontalForce(float force)
@@ -69,7 +70,7 @@ public class CharacterPhysics : GameBehaviour
     public void ApplyGravity()
     {
         Vector3 targetVelocity = Vector3.down * terminalVelocity * gravityScale;
-        float gravityRate = gravityValue * gravityScale;
+        float gravityRate = Mathf.Abs(gravityValue) * gravityScale * Time.deltaTime;
 
         LerpVelocity(targetVelocity, gravityRate);
     }
@@ -77,7 +78,6 @@ public class CharacterPhysics : GameBehaviour
     public void LerpVelocity(Vector3 targetVelocity, float lerpAmount)
     {
         lerpAmount = lerpAmount * Time.deltaTime;
-        
         velocity = Vector3.Lerp(velocity, targetVelocity, lerpAmount);
     }
 }

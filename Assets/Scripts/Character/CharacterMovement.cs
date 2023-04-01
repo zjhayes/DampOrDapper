@@ -41,9 +41,10 @@ public class CharacterMovement : GameBehaviour, ICharacterMovement
 
     void LateUpdate()
     {
+        StayAboveGround();
         // Update action timers.
         timeSinceJumpInput -= Time.deltaTime;
-        
+        //Debug.Log(physics.Velocity);
         if(physics.IsGrounded)
         {
             // Set timer to coyote time to allow for late jumps from edge of ground.
@@ -92,10 +93,6 @@ public class CharacterMovement : GameBehaviour, ICharacterMovement
         {
             //physics.SetVerticalVelocity(0f);
             physics.ApplyGravity();
-        }
-        else
-        {
-            //physics.SetVerticalVelocity(0f);
         }
         
         return physics.Velocity * Time.deltaTime;
@@ -161,21 +158,24 @@ public class CharacterMovement : GameBehaviour, ICharacterMovement
         get { return isRunning; }
     }
 
+    void StayAboveGround()
+    {
+        if (physics.IsGrounded && physics.Velocity.y < 0)
+        {
+            physics.SetVerticalVelocity(0f);
+        }
+    }
+    /*
     public bool GroundedThisFrame
     {
         get { return controller.isGrounded; }
     }
     
-    // TODO: Determine if needed.
     void StayAboveGround()
     {
-        if (GroundedThisFrame)
+        if (GroundedThisFrame && physics.Velocity.y < 0)
         {
-            // Ensure player remains above ground.
-            if (physics.Velocity.y < 0)
-            {
-                physics.SetVerticalVelocity(0f);
-            }
+            physics.SetVerticalVelocity(0f);
         }
-    }
+    }*/
 }
