@@ -14,6 +14,8 @@ public class CharacterMovement : GameBehaviour, ICharacterMovement
     float coyoteTime = 0.3f;
     [SerializeField]
     float jumpInputTolerance = 0.3f;
+    [SerializeField]
+    float slipThreshold = 0.5f;
 
     public delegate void OnRun();
     public event OnRun onRun;
@@ -24,12 +26,15 @@ public class CharacterMovement : GameBehaviour, ICharacterMovement
     public delegate void OnJump();
     public event OnJump onJump;
 
+    const float FALL_BUFFER = -0.1f; // Minimum speed to be considered falling.
+
     CharacterController controller;
     protected CharacterPhysics physics;
     Vector3 direction;
     float moveSpeed;
     bool isRunning;
     protected bool isJumping;
+    protected bool isFalling;
 
     float timeSinceJumpInput;
     protected float timeSinceGrounded;
@@ -44,22 +49,13 @@ public class CharacterMovement : GameBehaviour, ICharacterMovement
     {
         // Update action timers.
         timeSinceJumpInput -= Time.deltaTime;
-        
-        if(physics.IsGrounded)
-        {
-            // Set timer to coyote time to allow for late jumps from edge of ground.
-            timeSinceGrounded = coyoteTime;
-            isJumping = false;
-        }
-        else
-        {
-            timeSinceGrounded -= Time.deltaTime;
-        }
+
+        GroundCheck();
 
         // Move character.
         Vector3 horizontalMovement = CalculateHorizontalMovement();
         controller.Move(horizontalMovement);
-
+        Slip();
         // Turn character to face the direction they're moving.
         if (horizontalMovement != Vector3.zero)
         {
@@ -83,12 +79,13 @@ public class CharacterMovement : GameBehaviour, ICharacterMovement
     {
         physics.ApplyGravity();
 
+        // Jump when ready and able.
         if (timeSinceGrounded >= 0 && timeSinceJumpInput >= 0)
         {
             // Jump.
             isJumping = true;
             physics.ApplyVerticalForce(jumpPower);
-            timeSinceJumpInput = -1f;
+            timeSinceJumpInput = -1f; // Unready jump.
             onJump?.Invoke();
         }
         
@@ -98,6 +95,49 @@ public class CharacterMovement : GameBehaviour, ICharacterMovement
     void FaceDirection(Vector3 directionToFace)
     {
         gameObject.transform.forward = directionToFace;
+    }
+
+    void GroundCheck()
+    {
+        if (physics.IsGrounded)
+        {
+            // Set timer to coyote time to allow for late jumps from edge of ground.
+            timeSinceGrounded = coyoteTime;
+            isJumping = false;
+            isFalling = false;
+        }
+        else
+        {
+            timeSinceGrounded -= Time.deltaTime;
+            // Check if character is moving down.
+            isFalling = physics.Velocity.y < FALL_BUFFER;
+        }
+    }
+
+    // Prevents character from getting stuck on edges.
+    void Slip()
+    {
+        RaycastHit hit;
+        // Check for collisions in the direction of movement within the character's height.
+        Vector3 forwardOffset = new Vector3(0f, -0.1f, 0f);
+        Vector3 backwardOffset = new Vector3(0f, -0.1f, 0f);
+        if (Physics.Raycast(transform.position + forwardOffset, transform.forward, out hit, controller.radius))
+        {
+            Debug.Log("Slipping Front");
+            controller.Move(((transform.forward * 1f) + Vector3.up) * Time.deltaTime);
+            Debug.DrawRay(transform.position + forwardOffset, transform.forward * hit.distance, Color.red);
+        }
+        else if(Physics.Raycast(transform.position + backwardOffset, -transform.forward, out hit, controller.radius))
+        {
+            Debug.Log("Slipping Back");
+            controller.Move(((transform.forward * 1f) + Vector3.up) * Time.deltaTime);
+            Debug.DrawRay(transform.position + backwardOffset, -transform.forward * hit.distance, Color.red);
+        }
+        else
+        {
+            Debug.DrawRay(transform.position + forwardOffset, transform.forward * controller.radius, Color.green);
+            Debug.DrawRay(transform.position + backwardOffset, -transform.forward * controller.radius, Color.blue);
+        }
     }
 
     void OnEnable()
@@ -158,5 +198,10 @@ public class CharacterMovement : GameBehaviour, ICharacterMovement
     public bool IsJumping
     {
         get { return isJumping; }
+    }
+
+    public bool IsFalling
+    {
+        get { return isFalling; }
     }
 }

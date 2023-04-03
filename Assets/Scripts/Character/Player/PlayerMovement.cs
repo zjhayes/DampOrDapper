@@ -9,24 +9,19 @@ public class PlayerMovement : CharacterMovement
     [SerializeField]
     float windResistance = 1.0f;
 
-    bool isFalling;
     bool isGliding;
-
-    const float FALL_BUFFER = -0.1f; // Minimum speed to be considered falling.
     
     protected override Vector3 CalculateVerticalMovement() 
     {
-        // Check if character is moving down.
-        isFalling = (!physics.IsGrounded && physics.Velocity.y < FALL_BUFFER);
         
-        if (CanGlide())
+        if (!isGliding && CanGlide())
         {
             // Character is gliding.
             isGliding = true;
             isJumping = false;
             physics.GravityScale = 0.25f;
         }
-        else
+        else if(physics.IsGrounded)
         {
             isGliding = false;
             physics.GravityScale = 1f;
@@ -44,10 +39,5 @@ public class PlayerMovement : CharacterMovement
     public bool IsGliding
     {
         get { return isGliding; }
-    }
-
-    public bool IsFalling
-    {
-        get { return isFalling; }
     }
 }

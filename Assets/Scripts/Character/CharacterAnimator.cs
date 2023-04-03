@@ -27,24 +27,8 @@ public class CharacterAnimator : GameBehaviour
         float speedPercent = player.Movement.Direction.magnitude * player.Movement.Speed / player.Movement.RunSpeed;
         animator.SetFloat(speedParameterName, speedPercent, smoothTime, Time.deltaTime);
 
-        if (player.Physics.IsGrounded)
-        {
-            IsJumping(false);
-            IsGliding(false);
-            IsHovering(false);
-        }
-        else
-        {
-            if (player.Movement.IsGliding)
-            {
-                IsGliding(true);
-                IsJumping(false);
-            }
-            else
-            {
-                IsHovering(true);
-            }
-        }
+        IsJumping(player.Movement.IsJumping);
+        IsGliding(player.Movement.IsGliding);
     }
 
     public void IsHovering(bool airborne)
