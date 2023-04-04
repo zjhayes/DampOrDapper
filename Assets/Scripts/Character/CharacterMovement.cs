@@ -11,11 +11,13 @@ public class CharacterMovement : GameBehaviour, ICharacterMovement
     [SerializeField]
     float jumpPower = 3.0f;
     [SerializeField]
-    float coyoteTime = 0.3f;
+    float coyoteTime = 0.2f;
     [SerializeField]
-    float jumpInputTolerance = 0.3f;
+    float jumpInputTolerance = 0.2f;
     [SerializeField]
-    float slipThreshold = 0.5f;
+    float slipSpeed = 1f; // Speed at which character slips on/off edges.
+    
+    Vector3 obstructionCheckOffset = new Vector3(0f, -0.1f, 0f); // Offset starting point of front ray.
 
     public delegate void OnRun();
     public event OnRun onRun;
@@ -51,11 +53,12 @@ public class CharacterMovement : GameBehaviour, ICharacterMovement
         timeSinceJumpInput -= Time.deltaTime;
 
         GroundCheck();
+        ApplySlip();
 
         // Move character.
         Vector3 horizontalMovement = CalculateHorizontalMovement();
         controller.Move(horizontalMovement);
-        Slip();
+
         // Turn character to face the direction they're moving.
         if (horizontalMovement != Vector3.zero)
         {
@@ -64,7 +67,7 @@ public class CharacterMovement : GameBehaviour, ICharacterMovement
 
         // Change the vertical position of the player.
         Vector3 verticalMovement = CalculateVerticalMovement();
-        
+
         controller.Move(verticalMovement);
     }
 
@@ -88,7 +91,7 @@ public class CharacterMovement : GameBehaviour, ICharacterMovement
             timeSinceJumpInput = -1f; // Unready jump.
             onJump?.Invoke();
         }
-        
+
         return physics.Velocity * Time.deltaTime;
     }
 
@@ -115,29 +118,21 @@ public class CharacterMovement : GameBehaviour, ICharacterMovement
     }
 
     // Prevents character from getting stuck on edges.
-    void Slip()
+    void ApplySlip()
     {
-        RaycastHit hit;
-        // Check for collisions in the direction of movement within the character's height.
-        Vector3 forwardOffset = new Vector3(0f, -0.1f, 0f);
-        Vector3 backwardOffset = new Vector3(0f, -0.1f, 0f);
-        if (Physics.Raycast(transform.position + forwardOffset, transform.forward, out hit, controller.radius))
+        // Check if character is facing edge.
+        if (PathObstructed())
         {
-            Debug.Log("Slipping Front");
-            controller.Move(((transform.forward * 1f) + Vector3.up) * Time.deltaTime);
-            Debug.DrawRay(transform.position + forwardOffset, transform.forward * hit.distance, Color.red);
+            controller.Move(Slip());
         }
-        else if(Physics.Raycast(transform.position + backwardOffset, -transform.forward, out hit, controller.radius))
-        {
-            Debug.Log("Slipping Back");
-            controller.Move(((transform.forward * 1f) + Vector3.up) * Time.deltaTime);
-            Debug.DrawRay(transform.position + backwardOffset, -transform.forward * hit.distance, Color.red);
-        }
-        else
-        {
-            Debug.DrawRay(transform.position + forwardOffset, transform.forward * controller.radius, Color.green);
-            Debug.DrawRay(transform.position + backwardOffset, -transform.forward * controller.radius, Color.blue);
-        }
+    }
+
+    // Check for objects obstructing character's path.
+    bool PathObstructed()
+    {
+        RaycastHit hit; // Cast ray in front of and behind character, return true if ray hits object.
+        return (Physics.Raycast(transform.position + obstructionCheckOffset, transform.forward, out hit, controller.radius) ||
+            Physics.Raycast(transform.position + obstructionCheckOffset, -transform.forward, out hit, controller.radius));
     }
 
     void OnEnable()
@@ -149,9 +144,10 @@ public class CharacterMovement : GameBehaviour, ICharacterMovement
     {
         this.direction = new Vector3(direction.x, 0f, 0f);
     }
-
+    
     public void Run()
     {
+        // Toggle run speed.
         moveSpeed = runSpeed;
         isRunning = true;
         onRun?.Invoke();
@@ -159,6 +155,7 @@ public class CharacterMovement : GameBehaviour, ICharacterMovement
 
     public void Walk()
     {
+        // Toggle walk speed.
         moveSpeed = walkSpeed;
         isRunning = false;
         onWalk?.Invoke();
@@ -168,6 +165,12 @@ public class CharacterMovement : GameBehaviour, ICharacterMovement
     {
         // Ready jump.
         timeSinceJumpInput = jumpInputTolerance;
+    }
+
+    // Slide character forward.
+    public Vector3 Slip()
+    {
+        return ((transform.forward * slipSpeed) + Vector3.up) * Time.deltaTime;
     }
 
     public Vector3 Direction

@@ -102,9 +102,11 @@ MonoBehaviour:
   walkSpeed: 3
   runSpeed: 6
   jumpPower: 3
-  coyoteTime: 0.3
-  jumpInputTolerance: 0.3
-  groundBuffer: 0.1
+  coyoteTime: 0.2
+  jumpInputTolerance: 0.2
+  slipSpeed: 1
+  checkFrontOffset: {x: 0, y: -0.1, z: 0}
+  checkBehindOffset: {x: 0, y: -0.1, z: 0}
   umbrella: {fileID: 168096096493892134}
   minGlideHeight: 5
   windResistance: 1
