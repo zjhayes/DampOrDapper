@@ -19,7 +19,7 @@ public class CharacterMovement : GameBehaviour, ICharacterMovement
     [SerializeField]
     float backwardSlipSpeed = 3f; // Speed at which character slips off of edges.
     [SerializeField]
-    float edgeCheckHeight = -1f; // Check should be below character controller.
+    float edgeCheckHeight = -0.1f; // Check should be below character controller.
 
     public delegate void OnRun();
     public event OnRun onRun;
@@ -111,11 +111,16 @@ public class CharacterMovement : GameBehaviour, ICharacterMovement
             isJumping = false;
             isFalling = false;
         }
-        else
+        else // not grounded.
         {
             timeSinceGrounded -= Time.deltaTime;
-            // Check if character is moving down.
-            isFalling = physics.Velocity.y < FALL_BUFFER;
+
+            // When coyote time is expired...
+            if(timeSinceGrounded <= 0)
+            {
+                // Check if character is moving down.
+                isFalling = physics.Velocity.y < FALL_BUFFER;
+            }
         }
     }
 

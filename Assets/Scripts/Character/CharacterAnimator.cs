@@ -17,11 +17,6 @@ public class CharacterAnimator : GameBehaviour
     [SerializeField]
     float smoothTime = 0.1f;
 
-    void OnEnable()
-    {
-        player.Movement.onJump += UpdateJump;
-    }
-
     void Update()
     {
         float speedPercent = player.Movement.Direction.magnitude * player.Movement.Speed / player.Movement.RunSpeed;
@@ -44,10 +39,5 @@ public class CharacterAnimator : GameBehaviour
     public void IsJumping(bool jumping)
     {
         animator.SetBool(isJumpingParameterName, jumping);
-    }
-
-    void UpdateJump()
-    {
-        IsJumping(player.Movement.IsJumping);
     }
 }

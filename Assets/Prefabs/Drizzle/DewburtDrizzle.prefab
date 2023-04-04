@@ -83,9 +83,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e2f062d256525a4fa9f3abc73a531fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movement: {fileID: 79028521925391661}
   umbrella: {fileID: 168096096493892134}
-  physics: {fileID: 1237001986245445789}
   animator: {fileID: 2127336942538869956}
 --- !u!114 &79028521925391661
 MonoBehaviour:
@@ -104,9 +102,9 @@ MonoBehaviour:
   jumpPower: 3
   coyoteTime: 0.2
   jumpInputTolerance: 0.2
-  slipSpeed: 1
-  checkFrontOffset: {x: 0, y: -0.1, z: 0}
-  checkBehindOffset: {x: 0, y: -0.1, z: 0}
+  forwardSlipSpeed: 1
+  backwardSlipSpeed: 3
+  edgeCheckHeight: -0.1
   umbrella: {fileID: 168096096493892134}
   minGlideHeight: 5
   windResistance: 1

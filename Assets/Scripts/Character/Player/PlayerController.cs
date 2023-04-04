@@ -1,15 +1,16 @@
 using UnityEngine;
 
+[RequireComponent(typeof(PlayerMovement))]
+[RequireComponent(typeof(CharacterPhysics))]
 public class PlayerController : GameBehaviour
 {
     [SerializeField]
-    PlayerMovement movement;
-    [SerializeField]
     UmbrellaController umbrella;
     [SerializeField]
-    CharacterPhysics physics;
-    [SerializeField]
     CharacterAnimator animator;
+
+    PlayerMovement movement;
+    CharacterPhysics physics;
 
     public delegate void OnAttack();
     public event OnAttack onAttack;
@@ -17,14 +18,10 @@ public class PlayerController : GameBehaviour
     public delegate void OnShield();
     public event OnShield onShield;
 
-    void OnEnable()
+    void Awake()
     {
-        
-    }
-
-    void OnDisable()
-    {
-
+        movement = GetComponent<PlayerMovement>();
+        physics = GetComponent<CharacterPhysics>();
     }
 
     public void Attack()

@@ -13,7 +13,6 @@ public class PlayerMovement : CharacterMovement
     
     protected override Vector3 CalculateVerticalMovement() 
     {
-        
         if (!isGliding && CanGlide())
         {
             // Character is gliding.
