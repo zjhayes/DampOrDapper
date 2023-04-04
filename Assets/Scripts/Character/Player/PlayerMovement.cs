@@ -39,4 +39,13 @@ public class PlayerMovement : CharacterMovement
     {
         get { return isGliding; }
     }
+
+    protected override void ApplyJumpCut()
+    {
+        // Don't apply effects of canceling jump when gliding.
+        if(!IsGliding)
+        {
+            base.ApplyJumpCut();
+        }
+    }
 }

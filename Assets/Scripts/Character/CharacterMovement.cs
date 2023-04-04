@@ -20,6 +20,8 @@ public class CharacterMovement : GameBehaviour, ICharacterMovement
     float backwardSlipSpeed = 3f; // Speed at which character slips off of edges.
     [SerializeField]
     float edgeCheckHeight = -0.1f; // Check should be below character controller.
+    [SerializeField]
+    float jumpCutGravityScale = 1.5f;
 
     public delegate void OnRun();
     public event OnRun onRun;
@@ -38,6 +40,7 @@ public class CharacterMovement : GameBehaviour, ICharacterMovement
     float moveSpeed;
     bool isRunning;
     protected bool isJumping;
+    protected bool jumpCanceled;
     protected bool isFalling;
 
     float timeSinceJumpInput;
@@ -82,17 +85,11 @@ public class CharacterMovement : GameBehaviour, ICharacterMovement
 
     protected virtual Vector3 CalculateVerticalMovement()
     {
+        ApplyJumpCut();
+
         physics.ApplyGravity();
 
-        // Jump when ready and able.
-        if (timeSinceGrounded >= 0 && timeSinceJumpInput >= 0)
-        {
-            // Jump.
-            isJumping = true;
-            physics.ApplyVerticalForce(jumpPower);
-            timeSinceJumpInput = -1f; // Unready jump.
-            onJump?.Invoke();
-        }
+        JumpWhenReady();
 
         return physics.Velocity * Time.deltaTime;
     }
@@ -109,6 +106,7 @@ public class CharacterMovement : GameBehaviour, ICharacterMovement
             // Set timer to coyote time to allow for late jumps from edge of ground.
             timeSinceGrounded = coyoteTime;
             isJumping = false;
+            jumpCanceled = false;
             isFalling = false;
         }
         else // not grounded.
@@ -124,9 +122,23 @@ public class CharacterMovement : GameBehaviour, ICharacterMovement
         }
     }
 
+    void JumpWhenReady()
+    {
+        // Jump when ready and able.
+        if (timeSinceGrounded >= 0 && timeSinceJumpInput >= 0)
+        {
+            // Jump.
+            isJumping = true;
+            physics.ApplyVerticalForce(jumpPower);
+            timeSinceJumpInput = -1f; // Unready jump.
+            onJump?.Invoke();
+        }
+    }
+
     // Prevents character from getting stuck on edges.
     void ApplySlip()
     {
+        RaycastHit hit;
         if (physics.PathObstructed(transform.forward, edgeCheckHeight, controller.radius))
         {
             // Character is facing edge.
@@ -137,6 +149,15 @@ public class CharacterMovement : GameBehaviour, ICharacterMovement
             // Character is facing away from edge.
             controller.Move(Slip(backwardSlipSpeed));
         } // else character is not on edge.
+    }
+
+    protected virtual void ApplyJumpCut()
+    {
+        // Add gravity if jump canceled.
+        if (isJumping && jumpCanceled)
+        {
+            physics.GravityScale = jumpCutGravityScale;
+        }
     }
 
     void OnEnable()
@@ -169,6 +190,11 @@ public class CharacterMovement : GameBehaviour, ICharacterMovement
     {
         // Ready jump.
         timeSinceJumpInput = jumpInputTolerance;
+    }
+
+    public void JumpCut()
+    {
+        jumpCanceled = true;
     }
 
     // Slide character forward.
