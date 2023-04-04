@@ -15,9 +15,11 @@ public class CharacterMovement : GameBehaviour, ICharacterMovement
     [SerializeField]
     float jumpInputTolerance = 0.2f;
     [SerializeField]
-    float slipSpeed = 1f; // Speed at which character slips on/off edges.
-    
-    Vector3 obstructionCheckOffset = new Vector3(0f, -0.1f, 0f); // Offset starting point of front ray.
+    float forwardSlipSpeed = 1f; // Speed at which character slips on to edges.
+    [SerializeField]
+    float backwardSlipSpeed = 3f; // Speed at which character slips off of edges.
+    [SerializeField]
+    float edgeCheckHeight = -1f; // Check should be below character controller.
 
     public delegate void OnRun();
     public event OnRun onRun;
@@ -120,19 +122,16 @@ public class CharacterMovement : GameBehaviour, ICharacterMovement
     // Prevents character from getting stuck on edges.
     void ApplySlip()
     {
-        // Check if character is facing edge.
-        if (PathObstructed())
+        if (physics.PathObstructed(transform.forward, edgeCheckHeight, controller.radius))
         {
-            controller.Move(Slip());
+            // Character is facing edge.
+            controller.Move(Slip(forwardSlipSpeed));
         }
-    }
-
-    // Check for objects obstructing character's path.
-    bool PathObstructed()
-    {
-        RaycastHit hit; // Cast ray in front of and behind character, return true if ray hits object.
-        return (Physics.Raycast(transform.position + obstructionCheckOffset, transform.forward, out hit, controller.radius) ||
-            Physics.Raycast(transform.position + obstructionCheckOffset, -transform.forward, out hit, controller.radius));
+        else if(physics.PathObstructed(-transform.forward, edgeCheckHeight, controller.radius))
+        {
+            // Character is facing away from edge.
+            controller.Move(Slip(backwardSlipSpeed));
+        } // else character is not on edge.
     }
 
     void OnEnable()
@@ -168,7 +167,7 @@ public class CharacterMovement : GameBehaviour, ICharacterMovement
     }
 
     // Slide character forward.
-    public Vector3 Slip()
+    public Vector3 Slip(float slipSpeed)
     {
         return ((transform.forward * slipSpeed) + Vector3.up) * Time.deltaTime;
     }

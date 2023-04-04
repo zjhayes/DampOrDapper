@@ -89,6 +89,13 @@ public class CharacterPhysics : GameBehaviour
         velocity = Vector3.Lerp(velocity, targetVelocity, lerpAmount);
     }
 
+    // Cast ray from character position.
+    public bool PathObstructed(Vector3 direction, float height, float distance)
+    {
+        RaycastHit hit;
+        return Physics.Raycast(transform.position + (height * Vector3.up), direction, out hit, distance);
+    }
+
     void ResetVerticalVelocity()
     {
         velocity.y = 0f;
