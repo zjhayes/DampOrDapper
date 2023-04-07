@@ -130,7 +130,7 @@ public class CharacterMovement : GameBehaviour, ICharacterMovement
     void JumpWhenReady()
     {
         // Jump when ready and able.
-        if (timeSinceGrounded >= 0 && timeSinceJumpInput >= 0)
+        if (timeSinceGrounded >= 0 && timeSinceJumpInput >= 0 && !isJumping)
         {
             // Jump.
             isJumping = true;

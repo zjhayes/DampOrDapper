@@ -9,16 +9,27 @@ public class CharacterPhysics : GameBehaviour
     float gravityValue = -9.81f;
     [SerializeField]
     float groundCheckHeight = .75f;
+    [SerializeField]
+    float maxGroundAngle = 45.0f;
 
     const float GROUND_BUFFER = 0.1f; // Distance from ground to be considered grounded.
 
     CharacterController controller;
     Vector3 velocity;
+
     float gravityScale = 1f;
+    float distanceToGround;
+    bool isGrounded;
 
     void Awake()
     {
         controller = GetComponent<CharacterController>();
+    }
+
+    void Update()
+    {
+        distanceToGround = CheckGroundDistance();
+        isGrounded = DistanceToGround <= GROUND_BUFFER;
     }
 
     public Vector3 Velocity
@@ -41,27 +52,12 @@ public class CharacterPhysics : GameBehaviour
 
     public bool IsGrounded
     {
-        get { return DistanceToGround <= GROUND_BUFFER; }
+        get { return isGrounded; }
     }
 
     public float DistanceToGround
     {
-        get
-        {
-            RaycastHit hit;
-            float halfHeight = controller.height / 2.0f - controller.radius;
-            Vector3 center = transform.position + Vector3.up * groundCheckHeight;
-            //Debug.DrawLine(center, center - Vector3.up * halfHeight, Color.green);
-            if (Physics.SphereCast(center, controller.radius, Vector3.down, out hit, halfHeight))
-            {
-                float distanceToGround = hit.distance;
-                return hit.distance;
-            }
-            else
-            {
-                return float.MaxValue;
-            }
-        }
+        get { return distanceToGround; }
     }
 
     public void ApplyVerticalForce(float force)
@@ -108,14 +104,32 @@ public class CharacterPhysics : GameBehaviour
         RaycastHit hit;
         if(Physics.Raycast(transform.position + (height * Vector3.up), direction, out hit, distance))
         {
-            float angle = Vector3.Angle(hit.normal, Vector3.up);
-            //Debug.Log(angle);
             return true;
         }
         else
         {
             return false;
         }
+    }
+
+    float CheckGroundDistance()
+    {
+        RaycastHit hit;
+        float halfHeight = controller.height / 2.0f - controller.radius;
+        Vector3 center = transform.position + Vector3.up * groundCheckHeight;
+        //Debug.DrawLine(groundCheckCenter, groundCheckCenter - Vector3.up * groundCheckHeight, Color.green);
+        if (Physics.SphereCast(center, controller.radius, Vector3.down, out hit, halfHeight))
+        {
+            float groundAngle = Vector3.Angle(hit.normal, Vector3.up);
+            if(groundAngle <= maxGroundAngle)
+            {
+                Debug.Log(groundAngle);
+                return hit.distance;
+            }
+        }
+
+        // If no grounded detected, return infinity.
+        return float.MaxValue;
     }
 
     void ResetVerticalVelocity()
