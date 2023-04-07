@@ -58,7 +58,12 @@ public class CharacterMovement : GameBehaviour, ICharacterMovement
         timeSinceJumpInput -= Time.deltaTime;
 
         GroundCheck();
-        ApplySlip();
+
+        if(!physics.IsGrounded)
+        {
+            // Slip on/off edges.
+            ApplySlip();
+        }
 
         // Move character.
         Vector3 horizontalMovement = CalculateHorizontalMovement();

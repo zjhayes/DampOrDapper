@@ -29,19 +29,35 @@ public class CharacterPhysics : GameBehaviour
         get { return gravityScale; }
         set { gravityScale = value; }
     }
-
+    float groundBuffer = 0.1f;
     public bool IsGrounded
     {
-        get { return DistanceToGround <= GROUND_BUFFER; }
+        get { return DistanceToGround <= groundBuffer; }//GROUND_BUFFER; }
     }
+    float centerOffset = .75f;//1.5f;
+    public float radius = 0.7f;
+    public float height = 3.0f;
 
     public float DistanceToGround
     {
         get
         {
             RaycastHit hit;
-            if (Physics.Raycast(transform.position, Vector3.down, out hit))
+            float distanceBuffer = 0.1f;
+            float halfHeight = height / 2.0f - radius;
+            Vector3 center = transform.position + Vector3.up * centerOffset;
+            //if (Physics.Raycast(transform.position, Vector3.down, out hit))
+            Debug.DrawLine(center, center - Vector3.up * halfHeight, Color.green);
+            if (Physics.SphereCast(center, radius, Vector3.down, out hit, halfHeight))
             {
+                
+                //distanceBuffer = CalculateDistanceBuffer(hit, center);
+                distanceBuffer = 0.1f;
+                Debug.Log(distanceBuffer + " Buffer");
+                float distanceToGround = hit.distance;// + radius - halfHeight;
+                Debug.Log(distanceToGround + " Distance");
+                Debug.Log(distanceToGround <= distanceBuffer);
+                groundBuffer = distanceBuffer;
                 return hit.distance;
             }
             else
@@ -49,6 +65,26 @@ public class CharacterPhysics : GameBehaviour
                 return float.MaxValue;
             }
         }
+    }
+
+    float CalculateDistanceBuffer(RaycastHit hit, Vector3 center)
+    {
+        float angle = Vector3.Angle(hit.normal, Vector3.up);
+        float radianAngle = Mathf.Deg2Rad * angle;
+        Vector3 hitPoint = hit.point;
+        float halfHeight = height / 2.0f - radius;
+        float distanceFromHitPointToCharacterCenter = Vector3.Distance(hitPoint, center);
+        if(distanceFromHitPointToCharacterCenter < (0.1f + halfHeight))
+        {
+            return 0.1f;// + halfHeight;
+        }
+        //float distanceBuffer = (distanceFromHitPointToCharacterCenter - 0.7f) / Mathf.Cos(radianAngle) + radius;
+        float distanceBuffer = radius / Mathf.Sin(radianAngle) - distanceFromHitPointToCharacterCenter * Mathf.Tan(radianAngle);
+        if(distanceBuffer > 5f)
+        {
+            return 0.1f;// + halfHeight;
+        }
+        return distanceBuffer;
     }
 
     public void ApplyVerticalForce(float force)
@@ -93,7 +129,16 @@ public class CharacterPhysics : GameBehaviour
     public bool PathObstructed(Vector3 direction, float height, float distance)
     {
         RaycastHit hit;
-        return Physics.Raycast(transform.position + (height * Vector3.up), direction, out hit, distance);
+        if(Physics.Raycast(transform.position + (height * Vector3.up), direction, out hit, distance))
+        {
+            float angle = Vector3.Angle(hit.normal, Vector3.up);
+            //Debug.Log(angle);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     void ResetVerticalVelocity()
