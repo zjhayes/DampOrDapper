@@ -147,33 +147,33 @@ public class CharacterMovement : GameBehaviour, ICharacterMovement
         if (physics.PathObstructed(transform.forward, edgeCheckHeight, controller.radius + .1f))
         {
             // Character is facing edge.
-            ApplyForwardSlip();
+            controller.Move(ForwardSlip());
         }
         else if(physics.PathObstructed(-transform.forward, edgeCheckHeight, controller.radius))
         {
             // Character is facing away from edge.
-            ApplyBackwardSlip();
+            controller.Move(BackwardSlip());
         } // else character is not on edge.
     }
 
-    void ApplyForwardSlip()
+    Vector3 ForwardSlip()
     {
         if (physics.Velocity.y >= 0)
         {
             // Move forward when moving up.
-            controller.Move(Slip(forwardSlipSpeed));
+           return Slip(forwardSlipSpeed);
         }
         else
         {
             // Move backward when moving down.
-            controller.Move(Slip(-backwardSlipSpeed));
+            return Slip(-backwardSlipSpeed);
         }
     }
 
-    void ApplyBackwardSlip()
+    Vector3 BackwardSlip()
     {
         // Moves forward when edge is behind character.
-        controller.Move(Slip(backwardSlipSpeed));
+        return Slip(backwardSlipSpeed);
     }
 
     protected virtual void ApplyJumpCut()
