@@ -26,7 +26,7 @@ public class PlayerController : GameBehaviour
 
     public void Attack()
     {
-        movement.Walk();
+        //movement.Walk();
         umbrella.CurrentPose = UmbrellaPose.CLOSED;
         onAttack?.Invoke();
     }
@@ -35,7 +35,7 @@ public class PlayerController : GameBehaviour
     {
         if (enable)
         {
-            movement.Walk();
+            //movement.Walk();
             umbrella.CurrentPose = UmbrellaPose.OPEN;
             onShield?.Invoke();
         }

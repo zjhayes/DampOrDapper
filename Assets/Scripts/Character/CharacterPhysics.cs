@@ -96,6 +96,7 @@ public class CharacterPhysics : GameBehaviour
         velocity = Vector3.Lerp(velocity, targetVelocity, lerpAmount);
     }
 
+    
     // Cast ray from character position.
     public bool PathObstructed(Vector3 direction, float height, float distance)
     {
@@ -105,7 +106,6 @@ public class CharacterPhysics : GameBehaviour
             float obstructionAngle = Vector3.Angle(hit.normal, Vector3.up);
             if(obstructionAngle > controller.slopeLimit)
             {
-                //Debug.Log(obstructionAngle);
                 return true;
             }
         }
@@ -122,10 +122,8 @@ public class CharacterPhysics : GameBehaviour
         if (Physics.SphereCast(center, controller.radius, Vector3.down, out hit, halfHeight))
         {
             float groundAngle = Vector3.Angle(hit.normal, Vector3.up);
-            Debug.Log(groundAngle);
             if (groundAngle <= controller.slopeLimit)
             {
-                
                 return hit.distance;
             }
         }

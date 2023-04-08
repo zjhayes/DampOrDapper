@@ -19,6 +19,7 @@ public class CharacterAnimator : GameBehaviour
 
     void Update()
     {
+        // Calculate player speed percent to blend between animations.
         float speedPercent = player.Movement.Direction.magnitude * player.Movement.Speed / player.Movement.RunSpeed;
         animator.SetFloat(speedParameterName, speedPercent, smoothTime, Time.deltaTime);
 

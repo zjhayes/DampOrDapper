@@ -52,7 +52,7 @@ CharacterController:
   serializedVersion: 2
   m_Height: 3
   m_Radius: 0.7
-  m_SlopeLimit: 45
+  m_SlopeLimit: 21
   m_StepOffset: 0.3
   m_SkinWidth: 0.01
   m_MinMoveDistance: 0.001
@@ -71,6 +71,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   terminalVelocity: 53
   gravityValue: -9.81
+  groundCheckHeight: 0.75
 --- !u!114 &7567276357499202468
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -105,6 +106,7 @@ MonoBehaviour:
   forwardSlipSpeed: 1
   backwardSlipSpeed: 3
   edgeCheckHeight: -0.1
+  jumpCutGravityScale: 2
   umbrella: {fileID: 168096096493892134}
   minGlideHeight: 5
   windResistance: 1

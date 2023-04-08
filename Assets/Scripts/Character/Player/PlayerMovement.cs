@@ -20,7 +20,7 @@ public class PlayerMovement : CharacterMovement
             isJumping = false;
             physics.GravityScale = 0.25f;
         }
-        else if(physics.IsGrounded)
+        else if(physics.IsGrounded || umbrella.CurrentPose == UmbrellaPose.CLOSED)
         {
             isGliding = false;
             physics.GravityScale = 1f;

@@ -21,7 +21,7 @@ public class CharacterMovement : GameBehaviour, ICharacterMovement
     [SerializeField]
     float edgeCheckHeight = -0.1f; // Check should be below character controller.
     [SerializeField]
-    float jumpCutGravityScale = 1.5f;
+    float jumpCutGravityScale = 1.75f;
 
     public delegate void OnRun();
     public event OnRun onRun;
@@ -144,16 +144,36 @@ public class CharacterMovement : GameBehaviour, ICharacterMovement
     void ApplySlip()
     {
         RaycastHit hit;
-        if (physics.PathObstructed(transform.forward, edgeCheckHeight, controller.radius))
+        if (physics.PathObstructed(transform.forward, edgeCheckHeight, controller.radius + .1f))
         {
             // Character is facing edge.
-            controller.Move(Slip(forwardSlipSpeed));
+            ApplyForwardSlip();
         }
         else if(physics.PathObstructed(-transform.forward, edgeCheckHeight, controller.radius))
         {
             // Character is facing away from edge.
-            controller.Move(Slip(backwardSlipSpeed));
+            ApplyBackwardSlip();
         } // else character is not on edge.
+    }
+
+    void ApplyForwardSlip()
+    {
+        if (physics.Velocity.y >= 0)
+        {
+            // Move forward when moving up.
+            controller.Move(Slip(forwardSlipSpeed));
+        }
+        else
+        {
+            // Move backward when moving down.
+            controller.Move(Slip(-backwardSlipSpeed));
+        }
+    }
+
+    void ApplyBackwardSlip()
+    {
+        // Moves forward when edge is behind character.
+        controller.Move(Slip(backwardSlipSpeed));
     }
 
     protected virtual void ApplyJumpCut()
