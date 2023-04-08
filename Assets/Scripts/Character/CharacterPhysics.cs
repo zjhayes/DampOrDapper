@@ -9,8 +9,6 @@ public class CharacterPhysics : GameBehaviour
     float gravityValue = -9.81f;
     [SerializeField]
     float groundCheckHeight = .75f;
-    [SerializeField]
-    float maxGroundAngle = 45.0f;
 
     const float GROUND_BUFFER = 0.1f; // Distance from ground to be considered grounded.
 
@@ -104,12 +102,15 @@ public class CharacterPhysics : GameBehaviour
         RaycastHit hit;
         if(Physics.Raycast(transform.position + (height * Vector3.up), direction, out hit, distance))
         {
-            return true;
+            float obstructionAngle = Vector3.Angle(hit.normal, Vector3.up);
+            if(obstructionAngle > controller.slopeLimit)
+            {
+                //Debug.Log(obstructionAngle);
+                return true;
+            }
         }
-        else
-        {
-            return false;
-        }
+        // If no obstruction, return false.
+        return false;
     }
 
     float CheckGroundDistance()
@@ -121,9 +122,10 @@ public class CharacterPhysics : GameBehaviour
         if (Physics.SphereCast(center, controller.radius, Vector3.down, out hit, halfHeight))
         {
             float groundAngle = Vector3.Angle(hit.normal, Vector3.up);
-            if(groundAngle <= maxGroundAngle)
+            Debug.Log(groundAngle);
+            if (groundAngle <= controller.slopeLimit)
             {
-                Debug.Log(groundAngle);
+                
                 return hit.distance;
             }
         }

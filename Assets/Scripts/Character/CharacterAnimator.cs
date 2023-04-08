@@ -24,6 +24,7 @@ public class CharacterAnimator : GameBehaviour
 
         IsGliding(player.Movement.IsGliding);
         IsJumping(player.Movement.IsJumping);
+        animator.SetBool("isGrounded", player.Physics.IsGrounded);
     }
 
     public void IsHovering(bool airborne)
