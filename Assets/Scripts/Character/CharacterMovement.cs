@@ -83,9 +83,22 @@ public class CharacterMovement : GameBehaviour, ICharacterMovement
 
     protected virtual Vector3 CalculateHorizontalMovement()
     {
+        float speed = CalculateHorizontalSpeed();
+        
         Vector3 move = new Vector3(direction.x, 0f, 0f);
         move.Normalize();
-        return direction * Time.deltaTime * moveSpeed;
+        return direction * Time.deltaTime * speed;
+    }
+
+    protected virtual float CalculateHorizontalSpeed()
+    {
+        float speedFactor = 1f;
+        if(isFalling && !isJumping)
+        {
+            return walkSpeed * .75f; // Cancels out run speed.
+        }
+
+        return moveSpeed * speedFactor;
     }
 
     protected virtual Vector3 CalculateVerticalMovement()
@@ -164,7 +177,7 @@ public class CharacterMovement : GameBehaviour, ICharacterMovement
            return Slip(forwardSlipSpeed);
         }
         else
-        {
+        { 
             // Move backward when moving down.
             return Slip(-backwardSlipSpeed);
         }
