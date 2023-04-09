@@ -27,7 +27,7 @@ public class CharacterPhysics : GameBehaviour
     void Update()
     {
         distanceToGround = CheckGroundDistance();
-        isGrounded = DistanceToGround <= GROUND_BUFFER;
+        isGrounded = distanceToGround <= GROUND_BUFFER;
     }
 
     public Vector3 Velocity
@@ -116,19 +116,19 @@ public class CharacterPhysics : GameBehaviour
     float CheckGroundDistance()
     {
         RaycastHit hit;
-        float halfHeight = controller.height / 2.0f - controller.radius;
         Vector3 center = transform.position + Vector3.up * groundCheckHeight;
-        //Debug.DrawLine(groundCheckCenter, groundCheckCenter - Vector3.up * groundCheckHeight, Color.green);
-        if (Physics.SphereCast(center, controller.radius, Vector3.down, out hit, halfHeight))
+        // Cast sphere beneath character.
+        if (Physics.SphereCast(center, controller.radius, Vector3.down, out hit))
         {
             float groundAngle = Vector3.Angle(hit.normal, Vector3.up);
+            // Only consider ground if ground angle is within slope limit.
             if (groundAngle <= controller.slopeLimit)
             {
                 return hit.distance;
             }
         }
 
-        // If no grounded detected, return infinity.
+        // If no ground detected, return infinity.
         return float.MaxValue;
     }
 

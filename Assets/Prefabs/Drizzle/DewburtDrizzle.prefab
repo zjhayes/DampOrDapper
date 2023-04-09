@@ -108,7 +108,7 @@ MonoBehaviour:
   edgeCheckHeight: -0.1
   jumpCutGravityScale: 2
   umbrella: {fileID: 168096096493892134}
-  minGlideHeight: 5
+  minGlideHeight: 3
   windResistance: 1
 --- !u!114 &168096096493892134
 MonoBehaviour:

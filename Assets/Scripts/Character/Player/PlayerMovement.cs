@@ -32,6 +32,7 @@ public class PlayerMovement : CharacterMovement
     bool CanGlide()
     {
         // Character is falling from above minimum glide distance with their umbrella open.
+        Debug.Log(physics.DistanceToGround);
         return (isFalling && physics.DistanceToGround >= minGlideHeight && umbrella.CurrentPose == UmbrellaPose.OPEN);
     }
 

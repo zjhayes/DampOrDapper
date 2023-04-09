@@ -156,7 +156,6 @@ public class CharacterMovement : GameBehaviour, ICharacterMovement
     // Prevents character from getting stuck on edges.
     void ApplySlip()
     {
-        RaycastHit hit;
         if (physics.PathObstructed(transform.forward, edgeCheckHeight, controller.radius + .1f))
         {
             // Character is facing edge.
