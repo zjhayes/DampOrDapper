@@ -40,6 +40,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Jump",
+                    "type": "Button",
+                    "id": "735d3cb1-d59b-46b0-b17f-33dcdf0e8621",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -108,6 +117,17 @@
                     "action": "Run",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "eefd757f-4eb7-44ae-9e0f-f37499bbddb1",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -147,7 +167,7 @@
                 {
                     "name": "",
                     "id": "d0708040-9d5a-4db5-ac31-1b09221e9092",
-                    "path": "<Keyboard>/space",
+                    "path": "<Keyboard>/x",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -169,7 +189,7 @@
                 {
                     "name": "negative",
                     "id": "6f4586e1-0778-4f84-bbb9-d742b9c55dfb",
-                    "path": "<Keyboard>/a",
+                    "path": "<Keyboard>/leftArrow",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -180,7 +200,7 @@
                 {
                     "name": "positive",
                     "id": "71f274ba-3ea7-43a9-91df-8077e0a0ee7b",
-                    "path": "<Keyboard>/d",
+                    "path": "<Keyboard>/rightArrow",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -202,7 +222,7 @@
                 {
                     "name": "negative",
                     "id": "325d35b1-c553-4313-8c67-caf3a73264dc",
-                    "path": "<Keyboard>/w",
+                    "path": "<Keyboard>/upArrow",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -213,7 +233,7 @@
                 {
                     "name": "positive",
                     "id": "74cd36d3-0321-462a-9bb9-442af2d84d46",
-                    "path": "<Keyboard>/s",
+                    "path": "<Keyboard>/downArrow",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

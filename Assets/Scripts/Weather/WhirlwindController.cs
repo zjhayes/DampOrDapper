@@ -12,24 +12,24 @@ public class WhirlwindController : GameBehaviour
     [SerializeField]
     string dissolveParameterName = "Dissolve";
 
-    CharacterController character;
+    PlayerController player;
 
     Vector3 initialPosition;
 
     bool isReleased;
     bool isLaunched;
     GameObject currentWhirlwind;
-
+    /*
     void Start()
     {
-        character = gameManager.Character;
+        player = gameManager.Player;
         isReleased = false;
         isLaunched = false;
     }
 
     void Update() // TODO: Replace Update method
     {
-        if(character.Movement.IsGrounded)
+        if(player.Movement.IsGrounded)
         {
             if(currentWhirlwind != null)
             {
@@ -45,12 +45,12 @@ public class WhirlwindController : GameBehaviour
 
     public void Boost()
     {
-        if(character.Movement.IsGrounded && currentWhirlwind == null)
+        if(player.Movement.IsGrounded && currentWhirlwind == null)
         {
             // Create whirlwind and hover character.
-            initialPosition = character.transform.position;
+            initialPosition = player.transform.position;
             currentWhirlwind = (GameObject) Instantiate(whirlwindPrefab, initialPosition, Quaternion.identity);
-            character.Context.Hover();
+            player.Context.Hover();
         }
         else
         {
@@ -65,7 +65,7 @@ public class WhirlwindController : GameBehaviour
     void Launch()
     {
         Vector3 launchVelocity = new Vector3(0f, launchSpeed, 0f);
-        character.Movement.RigidBody.velocity = character.Movement.RigidBody.velocity + launchVelocity;
+        player.Movement.RigidBody.velocity = player.Movement.RigidBody.velocity + launchVelocity;
         isLaunched = true;
     }
 
@@ -91,7 +91,7 @@ public class WhirlwindController : GameBehaviour
         isReleased = true;
         if(!isLaunched)
         {
-            character.Context.Continue();
+            player.Context.Continue();
         }
-    }
+    }*/
 }
